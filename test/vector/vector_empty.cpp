@@ -15,6 +15,7 @@ public:
 
 int main()
 {
+	std::cout << "vector empty test" << std::endl;
 	NAMESPACE::vector<int> v;
 	std::cout << v.size() << std::endl;
 	std::cout << v.empty() << std::endl;

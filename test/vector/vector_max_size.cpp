@@ -15,6 +15,7 @@ public:
 
 int main()
 {
+	std::cout << "vector max size test" << std::endl;
 	std::cout << "Unsigned Char max size:" << NAMESPACE::vector<unsigned char>().max_size() << std::endl;
 	std::cout << "Unsigned Short max size:" << NAMESPACE::vector<unsigned short>().max_size() << std::endl;
 	std::cout << "Unsigned Int max size:" << NAMESPACE::vector<unsigned int>().max_size() << std::endl;

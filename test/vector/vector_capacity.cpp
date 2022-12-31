@@ -16,6 +16,7 @@ public:
 
 int main()
 {
+	std::cout << "vector capacity test" << std::endl;
 	NAMESPACE::vector<int> v;
 	// test for reserve
 	std::cout << "size: " << v.size() << std::endl;

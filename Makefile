@@ -47,6 +47,6 @@ re:
 	$(MAKE) all
 
 .PHONY: clean fclean re all
-#.SILENT:
+.SILENT:
 
 -include $(DEPS)

@@ -5,6 +5,7 @@
 #include <memory>
 #include <stdexcept>
 #include <iostream>
+#include "iterator.hpp"
 
 namespace ft{
 
@@ -20,6 +21,11 @@ namespace ft{
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef typename allocator_type::difference_type difference_type;
 			typedef typename allocator_type::size_type size_type;
+			typedef ft::random_access_iterator<value_type> iterator;
+			typedef ft::random_access_iterator<const value_type> const_iterator;
+			//TODO: reverse_iterator
+			//typedef ft::reverse_iterator<iterator> reverse_iterator;
+			//typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 			// Constructors
 			explicit vector(const allocator_type& alloc = allocator_type());
@@ -34,15 +40,18 @@ namespace ft{
 			// Operators
 			vector& operator=(const vector& x);
 			
-			// Iterators
-			/* iterator begin();
+			//Iterators
+			iterator begin();
 			const_iterator begin() const;
 			iterator end();
 			const_iterator end() const;
-			reverse_iterator rbegin();
-			const_reverse_iterator rbegin() const;
-			reverse_iterator rend();
-			const_reverse_iterator rend() const; */
+
+			//TODO: reverse_iterator
+			//reverse_iterator rbegin();
+			//const_reverse_iterator rbegin() const;
+			//reverse_iterator rend();
+			//const_reverse_iterator rend() const;
+			
 			// Capacity
 			size_type size() const;
 			size_type max_size() const;
@@ -70,6 +79,7 @@ namespace ft{
 			//iterator erase(iterator first, iterator last);
 			void swap(vector& x);
 			void clear();
+			std::string leon(void) const;
 			//debug
 
 		private:

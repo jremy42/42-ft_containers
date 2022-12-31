@@ -1,11 +1,7 @@
-#ifndef ITERATOR_HPP
-#define ITERATOR_HPP
-#endif
+#pragma once
 
 #define DEBUG 1
 #include <memory>
-#include <stdexcept>
-#include <iostream>
 
 namespace ft {
 
@@ -43,14 +39,87 @@ namespace ft {
 		typedef random_access_iterator_tag iterator_category;
 	};
 
-	template <class category, class T, class distance = ptrdiff_t, class pointer = T*, class reference = T&>
+	template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
 	struct iterator {
+		typedef Category iterator_category;
 		typedef T value_type;
-		typedef distance difference_type;
-		typedef pointer pointer;
-		typedef reference reference;
-		typedef category iterator_category;
-	};	
+		typedef Distance difference_type;
+		typedef Pointer pointer;
+		typedef Reference reference;
+	};
+
+	template <class T>
+	class random_access_iterator : public iterator<random_access_iterator_tag, T>
+	{
+		public:
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type value_type;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type difference_type;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer pointer;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference reference;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category iterator_category;
+		
+		protected:
+			pointer _current;
+
+		public:
+			random_access_iterator() : _current(nullptr) {}
+			explicit random_access_iterator(pointer ptr) : _current(ptr) {}
+			random_access_iterator(const random_access_iterator &other) : _current(other._current) {}
+			virtual ~random_access_iterator() {}
+			random_access_iterator &operator=(const random_access_iterator &other) {
+				if (this != &other)
+					_current = other._current;
+				return *this;
+			}
+			operator random_access_iterator<const T>() const { return random_access_iterator<const T>(_current); }
+			pointer base() const { return _current; }
+			reference operator*() const { return (*_current); }
+			pointer operator->() const { return _current; }
+			random_access_iterator &operator++() {
+				++_current;
+				return *this;
+			}
+			random_access_iterator operator++(int) {
+				random_access_iterator tmp(*this);
+				++_current;
+				return tmp;
+			}
+			random_access_iterator &operator--() {
+				--_current;
+				return *this;
+			}
+			random_access_iterator operator--(int) {
+				random_access_iterator tmp(*this);
+				--_current;
+				return tmp;
+			}
+			random_access_iterator operator+(difference_type n) const {
+				random_access_iterator tmp(*this);
+				tmp._current += n;
+				return tmp;
+			}
+			random_access_iterator operator-(difference_type n) const {
+				random_access_iterator tmp(*this);
+				tmp._current -= n;
+				return tmp;
+			}
+			random_access_iterator &operator+=(difference_type n) {
+				_current += n;
+				return *this;
+			}
+			random_access_iterator &operator-=(difference_type n) {
+				_current -= n;
+				return *this;
+			}
+			reference operator[](difference_type n) const { return _current[n]; }
+			friend bool operator==(const random_access_iterator &lhs, const random_access_iterator &rhs) { return lhs._current == rhs._current; } // base() is a protected member
+			friend bool operator!=(const random_access_iterator &lhs, const random_access_iterator &rhs) { return lhs._current != rhs._current; }
+			friend bool operator<(const random_access_iterator &lhs, const random_access_iterator &rhs) { return lhs._current < rhs._current; }
+			friend bool operator<=(const random_access_iterator &lhs, const random_access_iterator &rhs) { return lhs._current <= rhs._current; }
+			friend bool operator>(const random_access_iterator &lhs, const random_access_iterator &rhs) { return lhs._current > rhs._current; }
+			friend bool operator>=(const random_access_iterator &lhs, const random_access_iterator &rhs) { return lhs._current >= rhs._current; }
+
+	};
 }
 
 	

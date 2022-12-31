@@ -15,6 +15,7 @@ public:
 
 int main()
 {
+	std::cout << "vector size test" << std::endl;
 	NAMESPACE::vector<int> v;
 	std::cout << v.size() << std::endl;
 	v.push_back(1);

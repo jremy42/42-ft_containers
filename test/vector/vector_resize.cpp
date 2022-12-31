@@ -17,6 +17,7 @@ public:
 
 int main()
 {
+	std::cout << "vector resize test" << std::endl;
 	try
 	{
 	

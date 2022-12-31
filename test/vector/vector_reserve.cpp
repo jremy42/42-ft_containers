@@ -15,6 +15,7 @@ public:
 
 int main()
 {
+	std::cout << "vector reserve test" << std::endl;
 	try
 	{
 	

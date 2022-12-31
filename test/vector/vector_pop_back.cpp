@@ -17,6 +17,7 @@ public:
 
 int main()
 {
+	std::cout << "vector pop_back test" << std::endl;
 	NAMESPACE::vector<int> v;
 	std::cout << v << std::endl;
 	v.push_back(1);

@@ -29,6 +29,26 @@ ft::vector<T, Alloc>::max_size(void) const
 	return _allocator.max_size();
 }
 
+// surcharge operator=
+template <class T, class Alloc>
+ft::vector<T, Alloc>&
+ft::vector<T, Alloc>::operator=(const vector& lhs)
+{
+	if (this != &lhs)
+	{
+		for (size_type i = 0; i < _size; i++)
+			_allocator.destroy(&_data[i]);
+		_allocator.deallocate(_data, _capacity);
+		_size = lhs._size;
+		_capacity = lhs._capacity;
+		_allocator = lhs._allocator;
+		_data = _allocator.allocate(_capacity);
+		for (size_type i = 0; i < _size; i++)
+			_allocator.construct(&_data[i], lhs._data[i]);
+	}
+	return *this;
+}
+
 template <class T, class Alloc>
 typename ft::vector<T, Alloc>::size_type
 ft::vector<T, Alloc>::size(void) const
@@ -144,6 +164,42 @@ ft::vector<T, Alloc>::resize(size_type n, value_type val)
 			_allocator.destroy(&_data[i]);
 	}
 	_size = n;
+}
+// Iterator
+
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::iterator
+ft::vector<T, Alloc>::begin(void)
+{
+	return iterator(_data);
+}
+
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::const_iterator
+ft::vector<T, Alloc>::begin(void) const
+{
+	return const_iterator(_data);
+}
+
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::iterator
+ft::vector<T, Alloc>::end(void)
+{
+	return iterator(_data + _size);
+}
+
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::const_iterator
+ft::vector<T, Alloc>::end(void) const
+{
+	return const_iterator(_data + _size);
+}
+
+template <class T, class Alloc>
+std::string
+ft::vector<T, Alloc>::leon(void) const
+{
+	return std::string("0ZZZZZRRA§AAAAAAAAAAAAAAAAAAAAiiiiiiiiiiivf cggfffjufccccccccbujvcjjjjjjjjjjjjjj  ttttttttttttttttttt cegxxffffxxxxxgggggggggg cvtrrrrrnhhhhnhffffffffffffffffffffffffffffhnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn                          cgggggggggggggg~~~~~~~~~~~~~~~~~~~            zzzz§§§§§§§§00000000000000000000000\n00000000000000000000000000000000000000000000000000xxxxxxxxx≈≈≈xxxxxdd");
 }
 
 #endif

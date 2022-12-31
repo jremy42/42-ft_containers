@@ -15,6 +15,7 @@ public:
 
 int main()
 {
+	std::cout << "vector [] test" << std::endl;
 	NAMESPACE::vector<int> v;
 	v.push_back(1);
 	std::cout << v[0] << std::endl;
