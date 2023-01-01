@@ -12,6 +12,7 @@ ft::vector<T, Alloc>::vector(const allocator_type& alloc)
 {
 }
 
+
 //destructor
 template <class T, class Alloc>
 ft::vector<T, Alloc>::~vector(void)
@@ -194,6 +195,62 @@ ft::vector<T, Alloc>::end(void) const
 {
 	return const_iterator(_data + _size);
 }
+
+// Reverse iterator
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::reverse_iterator
+ft::vector<T, Alloc>::rbegin(void)
+{
+	return reverse_iterator(_data + _size - 1);
+}
+
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::const_reverse_iterator
+ft::vector<T, Alloc>::rbegin(void) const
+{
+	return const_reverse_iterator(_data + _size - 1);
+}
+
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::reverse_iterator
+ft::vector<T, Alloc>::rend(void)
+{
+	return reverse_iterator(_data - 1);
+}
+
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::const_reverse_iterator
+ft::vector<T, Alloc>::rend(void) const
+{
+	return const_reverse_iterator(_data - 1);
+}
+
+//insert
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::iterator
+ft::vector<T, Alloc>::insert(iterator position, const value_type& val)
+{
+	size_type pos = position - begin();
+	if (_size == _capacity)
+		reserve(_capacity * 2);
+	pointer tmp = _allocator.allocate(_capacity);
+	for (size_type i = 0; i < pos; i++)
+	{
+		_allocator.construct(&tmp[i], _data[i]);
+		_allocator.destroy(&_data[i]);
+	}
+	_allocator.construct(&tmp[pos], val);
+	for (size_type i = pos; i < _size; i++)
+	{
+		_allocator.construct(&tmp[i + 1], _data[i]);
+		_allocator.destroy(&_data[i]);
+	}
+	_allocator.deallocate(_data, _capacity);
+	_data = tmp;
+	_size++;
+	return iterator(_data + pos);
+}
+
 
 template <class T, class Alloc>
 std::string

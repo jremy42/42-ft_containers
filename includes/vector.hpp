@@ -23,9 +23,8 @@ namespace ft{
 			typedef typename allocator_type::size_type size_type;
 			typedef ft::random_access_iterator<value_type> iterator;
 			typedef ft::random_access_iterator<const value_type> const_iterator;
-			//TODO: reverse_iterator
-			//typedef ft::reverse_iterator<iterator> reverse_iterator;
-			//typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator> reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 			// Constructors
 			explicit vector(const allocator_type& alloc = allocator_type());
@@ -46,11 +45,10 @@ namespace ft{
 			iterator end();
 			const_iterator end() const;
 
-			//TODO: reverse_iterator
-			//reverse_iterator rbegin();
-			//const_reverse_iterator rbegin() const;
-			//reverse_iterator rend();
-			//const_reverse_iterator rend() const;
+			reverse_iterator rbegin();
+			const_reverse_iterator rbegin() const;
+			reverse_iterator rend();
+			const_reverse_iterator rend() const;
 			
 			// Capacity
 			size_type size() const;
@@ -71,12 +69,12 @@ namespace ft{
 			void assign(size_type n, const value_type& val);
 			void push_back(const value_type& val);
 			void pop_back();
-			//void insert(iterator position, const value_type& val);
-			//void insert(iterator position, size_type n, const value_type& val);
-			//template <class InputIterator>
-			//void insert(iterator position, InputIterator first, InputIterator last);
-			//iterator erase(iterator position);
-			//iterator erase(iterator first, iterator last);
+			void insert(iterator position, const value_type& val);
+			void insert(iterator position, size_type n, const value_type& val);
+			template <class InputIterator>
+			void insert(iterator position, InputIterator first, InputIterator last);
+			iterator erase(iterator position);
+			iterator erase(iterator first, iterator last);
 			void swap(vector& x);
 			void clear();
 			std::string leon(void) const;

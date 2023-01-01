@@ -10,6 +10,7 @@ LOAD_BAR=""
 
 TEST_NUMBER="0"
 VALGRIND="valgrind"
+PRINT_CONTAINER_TYPE=""
 
 function runing_tests()
 {
@@ -33,12 +34,18 @@ function test_fail() {
 
 function create_executable ()
 {
-	echo -e "${BLU}$LOAD_BAR${RST}"	
-	NAME=$(echo ".test_file/"$1 | rev | cut -c 5- | rev)
+	echo -e "${BLU}$LOAD_BAR${RST}"
+	TMP=$(echo $1 | cut -c 5- | rev | cut -c 5- | rev)
+	NAME=$(echo ".test_file/"$TMP)
 	mkdir -p ${NAME}
 	echo "Creating executable test: $NAME"
 	cp $1 srcs/main.cpp
 	make
+	if [ $? -ne 0 ]
+	then
+		echo "Compilation error"
+		exit 1
+	fi
 	mv ft_containers $NAME
 	make fclean
 	make std
@@ -50,26 +57,14 @@ function create_executable ()
 
 function execute_test ()
 {
-	EXEC_DIR=$(echo ".test_file/"$1 | rev | cut -c 5- | rev)
+	TMP=$(echo $1 | cut -c 5- | rev | cut -c 5- | rev)
+	EXEC_DIR=$(echo ".test_file"$TMP)
 	NAME=$(echo $EXEC_DIR | rev | cut -d '/' -f 1 | rev)
 	echo "$TEST_NUMBER TESTING:$NAME"
 	./$EXEC_DIR/ft_containers 1> $EXEC_DIR/ft_containers.out 2> $EXEC_DIR/ft_containers.err
 	./$EXEC_DIR/std_containers 1> $EXEC_DIR/std_containers.out 2> $EXEC_DIR/std_containers.err
 	./compares $NAME $EXEC_DIR/ft_containers.out $EXEC_DIR/std_containers.out
-	if [ $? -eq 0 ]
-	then
-		test_success
-	else
-		test_fail
-	fi
-
 	./compares "ERRORS" $EXEC_DIR/ft_containers.err $EXEC_DIR/std_containers.err
-	if [ $? -eq 0 ]
-	then
-		test_success
-	else
-		test_fail
-	fi
 	TEST_NUMBER=$((TEST_NUMBER + 1))
 
 }
@@ -101,9 +96,15 @@ fi
 
 for i in $TEST_FILES
 do
+	TMP=$(echo $i  | cut -c 6- | cut -d '/' -f 1 | tr '[:lower:]' '[:upper:]')
+	if [ "$TMP" != "$PRINT_CONTAINER_TYPE" ]
+	then
+		echo -e "${BLU}####[$TMP]####${RST}"
+		PRINT_CONTAINER_TYPE=$TMP
+	fi
 	execute_test "$i"
 done
 
 
 rm compares
-#rm -rf .test_file
+rm -rf .test_file
