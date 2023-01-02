@@ -49,6 +49,11 @@ function create_executable ()
 	mv ft_containers $NAME
 	make fclean
 	make std
+		if [ $? -ne 0 ]
+	then
+		echo "Compilation error"
+		exit 1
+	fi
 	mv std_containers $NAME
 	make fclean
 	clear

@@ -1,5 +1,4 @@
 #include "vector.hpp"
-#include "iterator.hpp"
 #include <iostream>
 #include <vector>
 #ifndef NAMESPACE
@@ -16,38 +15,34 @@ public:
 
 int main()
 {
-    std::cout << "test reverse iterator base" << std::endl;
-    NAMESPACE::vector<int> v;
-    // test reverse iterator base
-    NAMESPACE::vector<int>::reverse_iterator rit = v.rbegin();
-    NAMESPACE::vector<int>::reverse_iterator rite = v.rend();
-    std::cout << "rit == rite: " << (rit == rite) << std::endl;
-    std::cout << "rit != rite: " << (rit != rite) << std::endl;
-    std::cout << "rit < rite: " << (rit < rite) << std::endl;
-    std::cout << "rit <= rite: " << (rit <= rite) << std::endl;
-    std::cout << "rit > rite: " << (rit > rite) << std::endl;
-    std::cout << "rit >= rite: " << (rit >= rite) << std::endl;
-    v.push_back(1);
-    v.push_back(2);
-    v.push_back(3);
-    rit = v.rbegin();
-    rite = v.rend();
-    std::cout << "rit == rite: " << (rit == rite) << std::endl;
-    std::cout << "rit != rite: " << (rit != rite) << std::endl;
-    std::cout << "rit < rite: " << (rit < rite) << std::endl;
-    std::cout << "rit <= rite: " << (rit <= rite) << std::endl;
-    std::cout << "rit > rite: " << (rit > rite) << std::endl;
-    std::cout << "rit >= rite: " << (rit >= rite) << std::endl;
-
-    // test const reverse iterator base
-    NAMESPACE::vector<int>::const_reverse_iterator crit = v.rbegin();
-    NAMESPACE::vector<int>::const_reverse_iterator crite = v.rend();
-    std::cout << "crit == crite: " << (crit == crite) << std::endl;
-    std::cout << "crit != crite: " << (crit != crite) << std::endl;
-    std::cout << "crit < crite: " << (crit < crite) << std::endl;
-    std::cout << "crit <= crite: " << (crit <= crite) << std::endl;
-    std::cout << "crit > crite: " << (crit > crite) << std::endl;
-    std::cout << "crit >= crite: " << (crit >= crite) << std::endl;
-
-    return 0;
+	std::cout << "vector size test" << std::endl;
+	NAMESPACE::vector<int> v;
+	std::cout << v.size() << std::endl;
+	v.push_back(1);
+	std::cout << v.size() << std::endl;
+	v.push_back(2);
+	std::cout << v.size() << std::endl;
+	v.push_back(3);
+	std::cout << v.size() << std::endl;
+	v.pop_back();
+	std::cout << v.size() << std::endl;
+	v.pop_back();
+	std::cout << v.size() << std::endl;
+	v.pop_back();
+	std::cout << v.size() << std::endl;
+	//v.pop_back();
+	//std::cout << v.size() << std::endl;
+	NAMESPACE::vector<A> v2;
+	std::cout << v2.size() << std::endl;
+	v2.push_back(A());
+	std::cout << v2.size() << std::endl;
+	v2.push_back(A());
+	std::cout << v2.size() << std::endl;
+	v2.pop_back();
+	std::cout << v2.size() << std::endl;
+	v2.pop_back();
+	std::cout << v2.size() << std::endl;
+	//v2.pop_back();
+	//std::cout << v2.size() << std::endl;
+	return 0;
 }

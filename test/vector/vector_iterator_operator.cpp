@@ -149,8 +149,13 @@ int main()
     std::cout << "it3 - 1" << *(it3 - 1) << std::endl;
     std::cout << "it3 += 1" << *(it3 += 1) << std::endl;
     std::cout << "it3 -= 1" << *(it3 -= 1) << std::endl;
+	std::cout << " 1 + it3" << *(1 + it3) << std::endl;
     std::cout << "it3[1]" << (it3[1]) << std::endl;
     std::cout << "it3[1] = 1" << (it3[1] = 1) << std::endl;
     std::cout << "it3[1]" << (it3[1]) << std::endl;
+
+	// test const_iterator assign iterator
+	cit3 = it3;
+
     return 0;
 }
