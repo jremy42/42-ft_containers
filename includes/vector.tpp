@@ -76,8 +76,7 @@ ft::vector<T, Alloc>::operator=(const vector& lhs)
 template <class T, class Alloc>
 ft::vector<T, Alloc>::~vector(void)
 {
-	for (size_type i = 0; i < _size; i++)
-		_allocator.destroy(&_data[i]);
+	clear();
 	_allocator.deallocate(_data, _capacity);
 }
 
