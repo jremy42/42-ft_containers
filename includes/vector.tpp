@@ -25,6 +25,27 @@ ft::vector<T, Alloc>::vector(size_type n, const value_type& val, const allocator
 	_size = n;
 }
 
+template <class T, class Alloc>
+template <class InputIterator>
+ft::vector<T, Alloc>::vector(InputIterator first, InputIterator last, const allocator_type& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+	: _data(NULL), _size(0), _capacity(0), _allocator(alloc)
+{
+	size_type n = 0;
+	for (InputIterator it = first; it != last; it++)
+		n++;
+	reserve(n);
+	for (size_type i = 0; i < n; i++)
+		_allocator.construct(&_data[i], *first++);
+	_size = n;
+}
+
+template <class T, class Alloc>
+ft::vector<T, Alloc>::vector(const vector& lhs)
+	: _data(NULL), _size(0), _capacity(0), _allocator(lhs._allocator)
+{
+	*this = lhs;
+}
+
 // surcharge operator=
 template <class T, class Alloc>
 ft::vector<T, Alloc>&
@@ -38,7 +59,7 @@ ft::vector<T, Alloc>::operator=(const vector& lhs)
 		_size = lhs._size;
 		_capacity = lhs._capacity;
 		_allocator = lhs._allocator;
-		_data = _allocator.allocate(_capacity);
+		_data = _allocator.allocate(_capacity); 
 		for (size_type i = 0; i < _size; i++)
 			_allocator.construct(&_data[i], lhs._data[i]);
 	}
@@ -275,26 +296,23 @@ ft::vector<T, Alloc>::back(void) const
  * 		Modifiers
  ******************************************** */
 
-//assign
-/* 
+//assign with check if input operator is not an integral type with enable_if is_integral
 template <class T, class Alloc>
 template <class InputIterator>
 void
-ft::vector<T, Alloc>::assign(InputIterator first, InputIterator last,
-	typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+ft::vector<T, Alloc>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 {
-	size_type n = 0;
-	for (InputIterator it = first; it != last; it++)
-		n++;
-	if (n > _capacity)
-		reserve(n);
-	for (size_type i = 0; i < _size; i++)
-		_allocator.destroy(&_data[i]);
-	_size = 0;
-	for (InputIterator it = first; it != last; it++)
-		push_back(*it);
+	clear();
+	insert(begin(), first, last);
 }
- */
+
+template <class T, class Alloc>
+void
+ft::vector<T, Alloc>::assign(size_type n, const value_type& val)
+{
+	clear();
+	insert(begin(), n, val);
+}
 
 template <class T, class Alloc>
 void
@@ -323,9 +341,155 @@ ft::vector<T, Alloc>::pop_back(void)
 	}
 }
 
+// insert
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::iterator
+ft::vector<T, Alloc>::insert(iterator position, const value_type& val)
+{
+	size_type pos = distance(begin(), position);
+	if (_size == _capacity)
+	{
+		if (_capacity == 0)
+			reserve(1);
+		else
+			reserve(_capacity * 2);
+	}
+	_allocator.construct(&_data[_size], _data[_size - 1]);
+	for (size_type i = _size - 1; i > pos; i--)
+	{
+		_data[i] = _data[i - 1];
+	}
+	_data[pos] = val;
+	_size++;
+	return begin() + pos;
+}
 
+template <class T, class Alloc>
+void
+ft::vector<T, Alloc>::insert(iterator position, size_type n, const value_type& val)
+{
+	size_type pos = distance(begin(), position);
+	if (_size + n > _capacity)
+	{
+		if (_capacity == 0)
+			reserve(n);
+		else
+			reserve(_capacity * 2);
+	}
+	for (size_type i = 0; i < n; i++)
+	{
+		_allocator.construct(&_data[_size + i], _data[_size + i - 1]);
+	}
+	for (size_type i = _size + n - 1; i > pos + n - 1; i--)
+	{
+		_data[i] = _data[i - n];
+	}
+	for (size_type i = 0; i < n; i++)
+	{
+		_data[pos + i] = val;
+	}
+	_size += n;
+}
 
+template <class T, class Alloc>
+template <class InputIterator>
+void
+ft::vector<T, Alloc>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+{
+	size_type pos = distance(begin(), position);
+	size_type n = distance(first, last);
+	if (_size + n > _capacity)
+	{
+		if (_capacity == 0)
+			reserve(n);
+		else
+			reserve(_capacity * 2);
+	}
+	for (size_type i = 0; i < n; i++)
+	{
+		_allocator.construct(&_data[_size + i], _data[_size + i - 1]);
+	}
+	for (size_type i = _size + n - 1; i > pos + n - 1; i--)
+	{
+		_data[i] = _data[i - n];
+	}
+	for (size_type i = 0; i < n; i++)
+	{
+		_data[pos + i] = *first;
+		first++;
+	}
+	_size += n;
+}
 
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::iterator
+ft::vector<T, Alloc>::erase(iterator position)
+{
+	size_type pos = distance(begin(), position);
+	for (size_type i = pos; i < _size - 1; i++)
+	{
+		_data[i] = _data[i + 1];
+	}
+	_allocator.destroy(&_data[_size - 1]);
+	_size--;
+	return begin() + pos;
+}
+
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::iterator
+ft::vector<T, Alloc>::erase(iterator first, iterator last)
+{
+	size_type pos = distance(begin(), first);
+	size_type n = distance(first, last);
+	for (size_type i = pos; i < _size - n; i++)
+	{
+		_data[i] = _data[i + n];
+	}
+	for (size_type i = 0; i < n; i++)
+	{
+		_allocator.destroy(&_data[_size - 1 - i]);
+	}
+	_size -= n;
+	return begin() + pos;
+}
+
+template <class T, class Alloc>
+void
+ft::vector<T, Alloc>::swap(vector& x)
+{
+	pointer tmp_data = _data;
+	size_type tmp_size = _size;
+	size_type tmp_capacity = _capacity;
+	allocator_type tmp_allocator = _allocator;
+	_data = x._data;
+	_size = x._size;
+	_capacity = x._capacity;
+	_allocator = x._allocator;
+	x._data = tmp_data;
+	x._size = tmp_size;
+	x._capacity = tmp_capacity;
+	x._allocator = tmp_allocator;
+
+}
+
+template <class T, class Alloc>
+void
+ft::vector<T, Alloc>::clear(void)
+{
+	for (size_type i = 0; i < _size; i++)
+	{
+		_allocator.destroy(&_data[i]);
+	}
+	_size = 0;
+}
+
+// allocator
+template <class T, class Alloc>
+typename ft::vector<T, Alloc>::allocator_type
+ft::vector<T, Alloc>::get_allocator(void) const
+{
+	return _allocator;
+}
 
 /* ********************************************
  * 			Non-member function overloads

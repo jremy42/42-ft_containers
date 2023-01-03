@@ -1,6 +1,7 @@
 #include "vector.hpp"
 #include <iostream>
 #include <vector>
+#include "utils.hpp"
 #ifndef NAMESPACE
 # define NAMESPACE ft
 #endif
