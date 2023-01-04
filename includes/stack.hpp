@@ -25,18 +25,16 @@ namespace ft{
             const value_type& top() const { return c.back(); }
             void push(const value_type& val) { c.push_back(val); }
             void pop() { c.pop_back(); }
-            template <class T1, class Container1>
-            friend bool operator==(const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
-            template <class T1, class Container1>
-            friend bool operator<(const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
-            template <class T1, class Container1>
-            friend bool operator!=(const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
-            template <class T1, class Container1>
-            friend bool operator<=(const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
-            template <class T1, class Container1>
-            friend bool operator>(const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
-            template <class T1, class Container1>
-            friend bool operator>=(const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
+			friend bool operator== (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c == rhs.c; };
+			friend bool operator!= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c != rhs.c; };
+			friend bool operator<  (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c < rhs.c; };
+			friend bool operator<= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c <= rhs.c; };
+			friend bool operator>  (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c > rhs.c; };
+			friend bool operator>= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c >= rhs.c;
+		
+	};
+
     };
 }
+
 #endif

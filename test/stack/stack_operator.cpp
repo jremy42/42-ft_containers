@@ -11,7 +11,7 @@
 int main(void)
 {
     std::cout << "stack constructor test" << std::endl;
-   /*
+
     NAMESPACE::stack<int> s;
     NAMESPACE::stack<int> s2(s);
 
@@ -43,6 +43,5 @@ int main(void)
     std::cout << "s <= s2: " << (s <= s2) << std::endl;
     std::cout << "s > s2: " << (s > s2) << std::endl;
     std::cout << "s >= s2: " << (s >= s2) << std::endl;
-    */
     return 0;
 }
