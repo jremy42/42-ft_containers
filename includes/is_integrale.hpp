@@ -1,61 +1,92 @@
 #pragma once
 namespace ft {
 	template <typename T>
-	struct is_integral {
+	struct remove_cv{
+		typedef T type;
+	};
+	template <typename T>
+	struct remove_cv<const T>{
+		typedef T type;
+	};
+	template <typename T>
+	struct remove_cv<volatile T>{
+		typedef T type;
+	};
+	template <typename T>
+	struct remove_cv<const volatile T>{
+		typedef T type;
+	};
+
+	template <typename T>
+	struct is_integral_helper {
 		static const bool value = false;
 	};
 
 	template <>
-	struct is_integral<bool> {
+	struct is_integral_helper<bool> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<char> {
+	struct is_integral_helper<char> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<signed char> {
+	struct is_integral_helper<signed char> {
+		static const bool value = true;
+	};
+
+	template <>
+	struct is_integral_helper<char16_t> {
+		static const bool value = true;
+	};
+
+	template <>
+	struct is_integral_helper<char32_t> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<unsigned char> {
+	struct is_integral_helper<unsigned char> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<wchar_t> {
+	struct is_integral_helper<wchar_t> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<short> {
+	struct is_integral_helper<short> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<unsigned short> {
+	struct is_integral_helper<unsigned short> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<int> {
+	struct is_integral_helper<int> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<unsigned int> {
+	struct is_integral_helper<unsigned int> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<long> {
+	struct is_integral_helper<long> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<unsigned long> {
+	struct is_integral_helper<unsigned long> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<long long> {
+	struct is_integral_helper<long long> {
 		static const bool value = true;
 	};
 	template <>
-	struct is_integral<unsigned long long> {
+	struct is_integral_helper<unsigned long long> {
 		static const bool value = true;
+	};
+
+	template <typename T>
+	struct is_integral : public is_integral_helper<typename remove_cv<T>::type> {
 	};
 
 }

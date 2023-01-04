@@ -345,47 +345,31 @@ template <class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator
 ft::vector<T, Alloc>::insert(iterator position, const value_type& val)
 {
-	size_type pos = distance(begin(), position);
-	if (_size == _capacity)
-	{
-		if (_capacity == 0)
-			reserve(1);
-		else
-			reserve(_capacity * 2);
-	}
-	_allocator.construct(&_data[_size], _data[_size - 1]);
-	for (size_type i = _size - 1; i > pos; i--)
-	{
-		_data[i] = _data[i - 1];
-	}
-	_data[pos] = val;
-	_size++;
-	return begin() + pos;
+	difference_type pos_ret = ft::distance(begin(), position);
+	insert(position, 1, val);
+	return (iterator(&_data[pos_ret]));
 }
 
 template <class T, class Alloc>
 void
 ft::vector<T, Alloc>::insert(iterator position, size_type n, const value_type& val)
 {
-	size_type pos = distance(begin(), position);
-	if (_size + n > _capacity)
-	{
-		if (_capacity == 0)
-			reserve(n);
-		else
-			reserve(_capacity * 2);
+	difference_type pos = ft::distance(begin(), position);
+	difference_type begin_end = ft::distance(begin(), end());
+	difference_type position_end = ft::distance(position, end());
+	if (n == 0)
+		return;
+	if (_size + n <= _capacity);
+	else if (n + _size >= _capacity * 2)
+		reserve((n + _size));
+	else
+		reserve(_capacity * 2);
+	for (difference_type i = 1; i <= position_end; i++) {
+		_allocator.construct(&_data[begin_end + n - i], _data[begin_end - i]);
+		_allocator.destroy(&_data[begin_end - i]);
 	}
-	for (size_type i = 0; i < n; i++)
-	{
-		_allocator.construct(&_data[_size + i], _data[_size + i - 1]);
-	}
-	for (size_type i = _size + n - 1; i > pos + n - 1; i--)
-	{
-		_data[i] = _data[i - n];
-	}
-	for (size_type i = 0; i < n; i++)
-	{
-		_data[pos + i] = val;
+	for (size_type i = 0; i < n; i++) {
+		_allocator.construct(&_data[pos + i], val);
 	}
 	_size += n;
 }
@@ -395,26 +379,20 @@ template <class InputIterator>
 void
 ft::vector<T, Alloc>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 {
-	size_type pos = distance(begin(), position);
-	size_type n = distance(first, last);
-	if (_size + n > _capacity)
-	{
-		if (_capacity == 0)
-			reserve(n);
-		else
-			reserve(_capacity * 2);
+	difference_type pos = ft::distance(begin(), position);
+	difference_type begin_end = ft::distance(begin(), end());
+	difference_type position_end = ft::distance(position, end());
+	difference_type n = ft::distance(first, last);
+	if (n + _size <= _capacity)
+		reserve((n + _size) * 2);
+	else
+		reserve(n + _size);
+	for (difference_type i = 1; i <= position_end; i++) {
+		_allocator.construct(&_data[begin_end + n - i], _data[begin_end - i]);
+		_allocator.destroy(&_data[begin_end - i]);
 	}
-	for (size_type i = 0; i < n; i++)
-	{
-		_allocator.construct(&_data[_size + i], _data[_size + i - 1]);
-	}
-	for (size_type i = _size + n - 1; i > pos + n - 1; i--)
-	{
-		_data[i] = _data[i - n];
-	}
-	for (size_type i = 0; i < n; i++)
-	{
-		_data[pos + i] = *first;
+	for (difference_type i = 0; i < n; i++) {
+		_allocator.construct(&_data[pos + i], *first);
 		first++;
 	}
 	_size += n;
@@ -424,7 +402,7 @@ template <class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator
 ft::vector<T, Alloc>::erase(iterator position)
 {
-	size_type pos = distance(begin(), position);
+	size_type pos = ft::distance(begin(), position);
 	for (size_type i = pos; i < _size - 1; i++)
 	{
 		_data[i] = _data[i + 1];

@@ -6,13 +6,6 @@
 
 namespace ft {
 
-	struct input_iterator_tag {};
-	struct output_iterator_tag {};
-	struct forward_iterator_tag : public input_iterator_tag {};
-	struct bidirectional_iterator_tag : public forward_iterator_tag {};
-	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
-
-
 	template <class Iterator>
 	struct iterator_traits {
 		typedef typename Iterator::difference_type difference_type;
@@ -28,7 +21,7 @@ namespace ft {
 		typedef Iterator value_type;
 		typedef Iterator* pointer;
 		typedef Iterator& reference;
-		typedef random_access_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 	};
 
 	template <class Iterator>
@@ -37,7 +30,7 @@ namespace ft {
 		typedef Iterator value_type;
 		typedef const Iterator* pointer;
 		typedef const Iterator& reference;
-		typedef random_access_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 	};
 
 	template <class Category, class Iterator, class Distance = std::ptrdiff_t, class Pointer = Iterator*, class Reference = Iterator&>
@@ -50,14 +43,14 @@ namespace ft {
 	};
 
 	template <class T>
-	class random_access_iterator : public iterator<random_access_iterator_tag, T>
+	class random_access_iterator : public iterator<std::random_access_iterator_tag, T>
 	{
 		public:
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type value_type;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type difference_type;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer pointer;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference reference;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category iterator_category;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::value_type value_type;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::difference_type difference_type;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::pointer pointer;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::reference reference;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::iterator_category iterator_category;
 		
 		private:
 			pointer _current;
@@ -118,11 +111,17 @@ namespace ft {
 				tmp._current += n;
 				return tmp;
 			}
+			
+			friend difference_type operator+(const random_access_iterator &lhs, const random_access_iterator &rhs) {
+				return lhs._current + rhs._current;
+			}
 
-			friend random_access_iterator operator-(difference_type n, const random_access_iterator &it) {
-				random_access_iterator tmp(it);
-				tmp._current -= n;
-				return tmp;
+			friend difference_type operator-(difference_type n, const random_access_iterator &it) {
+				return n - it._current;
+			}
+
+			friend difference_type operator-(const random_access_iterator &lhs, const random_access_iterator &rhs) {
+				return lhs._current - rhs._current;
 			}
 
 			random_access_iterator &operator+=(difference_type n) {
@@ -225,11 +224,16 @@ namespace ft {
 				tmp._current -= n;
 				return tmp;
 			}
+			friend reverse_iterator operator+(const reverse_iterator &lhs, const reverse_iterator &rhs)
+			{ return reverse_iterator(lhs._current + (rhs._current - lhs._current)); }
 
 			friend reverse_iterator operator+(difference_type n, const reverse_iterator &it)
 			{ return it + n; }
 
-			friend reverse_iterator operator-(difference_type n, const reverse_iterator &it)
+			friend difference_type operator-(const reverse_iterator &lhs, const reverse_iterator &rhs)
+			{ return (rhs._current - lhs._current); }
+
+			friend difference_type operator-(difference_type n, const reverse_iterator &it)
 			{ return it - n; }
 
 
