@@ -12,8 +12,8 @@
 class A
 {
 public:
-	A() {}
-	~A() {}
+	A() { _a = new int;}
+	~A() {delete _a;}
 	A(A const &a) { (void)a; }
 	A &operator=(A const &a) { (void)a; return *this; }
     friend std::ostream &operator<<(std::ostream &out, A const &a)
@@ -22,6 +22,8 @@ public:
         out << "A";
         return out;
     }
+	private:
+		int* _a;
 };
 
 int main()
@@ -122,4 +124,12 @@ int main()
 	v10.insert(v10.begin(), it3, eos3);
 	std::cout << __LINE__ << v10 << std::endl;
 
+	NAMESPACE::vector<A> v11;
+	v11.push_back(A());
+	v11.push_back(A());
+	v11.insert(v11.begin(), A());
+	std::cout << __LINE__ << v11 << std::endl;
+	v11.insert(v11.begin(), 10, A());
+	v11.insert(v11.end(), 5, A());
+	v11.insert(v11.begin() + 3, 2, A());
 }
