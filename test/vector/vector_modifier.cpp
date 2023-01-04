@@ -3,6 +3,8 @@
 #include <vector>
 #include "utils.hpp"
 #include <list>
+#include <fstream>
+#include <sstream>
 
 #ifndef NAMESPACE
 # define NAMESPACE ft
@@ -88,5 +90,36 @@ int main()
 	v7.assign(l.begin(), l.end());
 
 	std::cout << __LINE__ << v7 << std::endl;
+
+	std::stringstream ss;
+	// create iterator from string stream
+	// create eos frorm ss
+	for (int i = 0; i < 10; i++)
+		ss << i << " ";
+	std::istream_iterator<int> it(ss);
+	std::istream_iterator<int> eos;
+
+	NAMESPACE::vector<int> v8;
+	v8.assign(it, eos);
+	std::cout << __LINE__ << v8 << std::endl;
+
+	std::stringstream ss2;
+	for (int i = 0; i < 10; i++)
+		ss2 << i << " ";
+	std::istream_iterator<int> it2(ss2);
+	std::istream_iterator<int> eos2;
+
+	NAMESPACE::vector<int> v9(it2, eos2);
+	std::cout << __LINE__ << v9 << std::endl;
+
+	// same but use insert
+	NAMESPACE::vector<int> v10;
+	std::stringstream ss3;
+	for (int i = 0; i < 10; i++)
+		ss3 << i << " ";
+	std::istream_iterator<int> it3(ss3);
+	std::istream_iterator<int> eos3;
+	v10.insert(v10.begin(), it3, eos3);
+	std::cout << __LINE__ << v10 << std::endl;
 
 }

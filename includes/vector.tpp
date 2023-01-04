@@ -25,18 +25,13 @@ ft::vector<T, Alloc>::vector(size_type n, const value_type& val, const allocator
 	_size = n;
 }
 
+
 template <class T, class Alloc>
 template <class InputIterator>
-ft::vector<T, Alloc>::vector(InputIterator first, InputIterator last, const allocator_type& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+ft::vector<T, Alloc>::vector(InputIterator first, InputIterator last, const allocator_type& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type*)
 	: _data(NULL), _size(0), _capacity(0), _allocator(alloc)
 {
-	size_type n = 0;
-	for (InputIterator it = first; it != last; it++)
-		n++;
-	reserve(n);
-	for (size_type i = 0; i < n; i++)
-		_allocator.construct(&_data[i], *first++);
-	_size = n;
+	insert(begin(), first, last);
 }
 
 template <class T, class Alloc>
@@ -201,6 +196,7 @@ ft::vector<T, Alloc>::reserve(size_type n)
 {
 	if (n > max_size())
 		throw std::length_error("vector::reserve");
+
 	if (n > _capacity)
 	{
 		try
@@ -217,8 +213,7 @@ ft::vector<T, Alloc>::reserve(size_type n)
 		}
 		catch(const std::bad_alloc& e)
 		{
-			if (DEBUG)
-				std::cerr << "bad alloc in ft vector" << std::endl;
+			std::cerr << "bad alloc in ft vector" << std::endl;
 			throw;
 		}
 	}
@@ -295,15 +290,38 @@ ft::vector<T, Alloc>::back(void) const
  * 		Modifiers
  ******************************************** */
 
-//assign with check if input operator is not an integral type with enable_if is_integral
+// Assign with check if iterator tag is random access
 template <class T, class Alloc>
 template <class InputIterator>
 void
-ft::vector<T, Alloc>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+ft::vector<T, Alloc>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type*)
+{
+	typedef typename ft::iterator_traits<InputIterator>::iterator_category category;
+	assign_range(first, last, category());
+}
+
+template <class T, class Alloc>
+template <class InputIterator>
+void
+ft::vector<T, Alloc>::assign_range(InputIterator first, InputIterator last, std::forward_iterator_tag)
 {
 	clear();
 	insert(begin(), first, last);
 }
+
+template <class T, class Alloc>
+template <class InputIterator>
+void
+ft::vector<T, Alloc>::assign_range(InputIterator first, InputIterator last, std::input_iterator_tag )
+{
+	clear();
+	while (first != last)
+	{
+		push_back(*first);
+		first++;
+	}
+}
+
 
 template <class T, class Alloc>
 void
@@ -360,7 +378,7 @@ ft::vector<T, Alloc>::insert(iterator position, size_type n, const value_type& v
 	if (n == 0)
 		return;
 	if (_size + n <= _capacity);
-	else if (n + _size >= _capacity * 2)
+	else if (n + _size > _capacity * 2)
 		reserve((n + _size));
 	else
 		reserve(_capacity * 2);
@@ -377,16 +395,28 @@ ft::vector<T, Alloc>::insert(iterator position, size_type n, const value_type& v
 template <class T, class Alloc>
 template <class InputIterator>
 void
-ft::vector<T, Alloc>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+ft::vector<T, Alloc>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type*)
+{
+	typedef typename ft::iterator_traits<InputIterator>::iterator_category category;
+	insert_range(position, first, last, category());
+}
+
+template <class T, class Alloc>
+template <class InputIterator>
+void
+ft::vector<T, Alloc>::insert_range(iterator position, InputIterator first, InputIterator last, std::forward_iterator_tag)
 {
 	difference_type pos = ft::distance(begin(), position);
 	difference_type begin_end = ft::distance(begin(), end());
 	difference_type position_end = ft::distance(position, end());
 	difference_type n = ft::distance(first, last);
-	if (n + _size <= _capacity)
-		reserve((n + _size) * 2);
+	if (n == 0)
+		return;
+	if (_size + n <= _capacity);
+	else if (n + _size > _capacity * 2)
+		reserve((n + _size));
 	else
-		reserve(n + _size);
+		reserve(_capacity * 2);
 	for (difference_type i = 1; i <= position_end; i++) {
 		_allocator.construct(&_data[begin_end + n - i], _data[begin_end - i]);
 		_allocator.destroy(&_data[begin_end - i]);
@@ -397,6 +427,23 @@ ft::vector<T, Alloc>::insert(iterator position, InputIterator first, InputIterat
 	}
 	_size += n;
 }
+
+template <class T, class Alloc>
+template <class InputIterator>
+void
+ft::vector<T, Alloc>::insert_range(iterator position, InputIterator first, InputIterator last, std::input_iterator_tag)
+{
+	difference_type pos = ft::distance(begin(), position);
+	vector<value_type> tmp;
+
+	tmp.insert(tmp.begin(), begin(), begin() + pos);
+	for (InputIterator it = first; it != last; it++)
+		tmp.push_back(*it);
+	tmp.insert(tmp.end(), begin() + pos, end());
+	*this = tmp;
+}
+
+
 
 template <class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator
@@ -416,8 +463,8 @@ template <class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator
 ft::vector<T, Alloc>::erase(iterator first, iterator last)
 {
-	size_type pos = distance(begin(), first);
-	size_type n = distance(first, last);
+	size_type pos = ft::distance(begin(), first);
+	size_type n = ft::distance(first, last);
 	for (size_type i = pos; i < _size - n; i++)
 	{
 		_data[i] = _data[i + n];

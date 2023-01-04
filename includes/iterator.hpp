@@ -1,6 +1,5 @@
 #pragma once
 
-#define DEBUG 1
 #include <memory>
 #include <cstddef>
 

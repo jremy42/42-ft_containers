@@ -112,4 +112,4 @@ done
 
 
 rm compares
-rm -rf .test_file
+#rm -rf .test_file

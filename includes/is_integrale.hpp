@@ -35,7 +35,7 @@ namespace ft {
 		static const bool value = true;
 	};
 
-	template <>
+/* 	template <>
 	struct is_integral_helper<char16_t> {
 		static const bool value = true;
 	};
@@ -43,7 +43,7 @@ namespace ft {
 	template <>
 	struct is_integral_helper<char32_t> {
 		static const bool value = true;
-	};
+	}; */
 	template <>
 	struct is_integral_helper<unsigned char> {
 		static const bool value = true;
