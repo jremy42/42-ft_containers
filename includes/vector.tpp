@@ -523,14 +523,7 @@ template <class T, class Alloc>
 bool
 operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
 {
-	if (lhs.size() != rhs.size())
-		return false;
-	for (size_t i = 0; i < lhs.size(); i++)
-	{
-		if (lhs[i] != rhs[i])
-			return false;
-	}
-	return true;
+	return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 template <class T, class Alloc>
@@ -544,18 +537,9 @@ template <class T, class Alloc>
 bool
 operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
 {
-	size_t i = 0;
-	while (i < lhs.size() && i < rhs.size())
-	{
-		if (lhs[i] < rhs[i])
-			return true;
-		else if (lhs[i] > rhs[i])
-			return false;
-		i++;
-	}
-	if (i == lhs.size() && i != rhs.size())
-		return true;
-	return false;
+	if (lhs == rhs)
+		return false;
+	return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 template <class T, class Alloc>

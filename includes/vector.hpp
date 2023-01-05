@@ -8,6 +8,7 @@
 #include "is_integrale.hpp"
 #include "enable_if.hpp"
 #include "distance.hpp"
+#include "lexicographical_compare.hpp"
 #include <iterator>
 
 namespace ft{
