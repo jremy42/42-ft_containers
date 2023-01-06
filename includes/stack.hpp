@@ -17,7 +17,7 @@ namespace ft{
             typedef T value_type;
             typedef Container container_type;
             typedef size_t size_type;
-        protected:
+        private:
             container_type c;
         public:
             explicit stack(const container_type& ctnr = container_type()) : c(ctnr) {}

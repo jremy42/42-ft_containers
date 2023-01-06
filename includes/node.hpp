@@ -21,4 +21,4 @@ namespace ft{
 		Node *right;
 		int _color;
 	};
-}
+};

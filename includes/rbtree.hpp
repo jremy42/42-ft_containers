@@ -5,7 +5,7 @@
 #include "node.hpp"
 #include "pair.hpp"
 #include <memory>
-#include "binary_function.hpp"
+#include "binary_predicate.hpp"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -25,7 +25,7 @@ struct Trunk
 
 namespace ft
 {
-	template <class T, class Compare = ft::less<T> , class Alloc = std::allocator<T>, class Node = ft::Node<T> >
+	template <class T, class Compare = std::less<ft::Node<T>> , class Alloc = std::allocator<ft::Node<T>>, class Node = ft::Node<T> >
 	class rbtree
 	{
 		typedef T value_type;
@@ -43,24 +43,37 @@ namespace ft
 			rbtree(const rbtree &other);
 			~rbtree();	
 			rbtree &operator=(const rbtree &other);
-
-			void insert(value_type data);
+			
+			pointer insert(value_type data);
+			bool erase(value_type data);
 			void print_tree(void);
 			void clear(void);
+			int size(void);
+			pointer find(value_type data);
+
 		private:
-			Node *_root;
-			Node *_nil;
-			int _height;
-			allocator_type alloc;
-			key_compare comp;
-			void insert_tree_preorder_mode(Node *root, Node *node);
-			void showTrunks(Trunk *p);
-			void printTreeWithTrunks(Node *root, Trunk *prev, bool isLeft);
-			void rotate_left(Node *node);
-			void rotate_right(Node *node);
-			void insert_fixup(Node *node);
-			void delete_fixup(Node *node);
-			int get_height(Node *node);
+			pointer _root;
+			pointer _nil;
+			allocator_type _alloc;
+			key_compare _comp;
+			size_type _size;
+
+			// insert functions
+			void _insert_tree_preorder_mode(pointer root, pointer node);
+			void _rotate_left(pointer node);
+			void _rotate_right(pointer node);
+			void _insert_fixup(pointer node);
+			void _delete_fixup(pointer node);
+			int _get_height(pointer node);
+			void _transplant(pointer node1, pointer node2);
+			// print functions
+			void _showTrunks(Trunk *p);
+			void _printTreeWithTrunks(pointer root, Trunk *prev, bool isLeft);
+			void _clear(pointer node);
+			pointer _find(pointer node, value_type data);
+			void	_erase(pointer node);
+			pointer _findMin(pointer node);
+			pointer _findMax(pointer node);
 
 	};
 
