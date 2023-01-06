@@ -1,5 +1,5 @@
-#ifndef BINARY_FUNCTION_HPP
-#define BINARY_FUNCTION_HPP
+#ifndef BINARY_PREDICATE_HPP
+#define BINARY_PREDICATE_HPP
 
 #include <memory>
 #include <iostream>
@@ -15,13 +15,10 @@ namespace ft{
 		typedef T2 second_argument_type;
 		typedef Result result_type;
 	};
-
 	template <class T>
 	struct less : public ft::binary_function<T, T, bool>
 	{
 		bool operator() (const T& x, const T& y) const { return x < y; }
 	};
-
-
 };
 #endif

@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include "vector.hpp"
 #include "iterator.hpp"
+#include "binary_predicate.hpp"
+#include "lexicographical_compare.hpp"
 
 namespace ft{
     template <class T, class Container = ft::vector<T> >
