@@ -7,7 +7,7 @@
 #include <iostream>
 
 #define COLOR_RED "\033[31m"
-#define COLOR_BLACK "\033[30m"
+#define COLOR_BLACK "\033[33m"
 #define COLOR_RESET "\033[0m"
 #define COLOR_GREEN "\033[32m"
 
@@ -18,7 +18,7 @@ ft::rbtree<T, Compare, Alloc, Node>::rbtree(void)
 
 	_nil = _alloc.allocate(1);
 	_alloc.construct(_nil, value_type());
-	_nil->_color = RED;
+	_nil->_color = BLACK;
 	_nil->left = NULL;
 	_nil->right = NULL;
 	_nil->parent = NULL;
@@ -254,9 +254,9 @@ void ft::rbtree<T, Compare, Alloc, Node>::_delete_fixup(pointer node)
 	// node == x
 	//sibling == w
 	std::cout << "delete fixup" << std::endl;
-	//std::cout << "node: " << node->data << std::endl;
+	std::cout << "node: " << node->data << std::endl;
 	print_tree();
-	pointer sibling = _nil;
+	pointer sibling = NULL;
 	while (node != _root && node->_color == BLACK)
 	{
 		if (node == node->parent->left)
@@ -375,8 +375,7 @@ void ft::rbtree<T, Compare, Alloc, Node>::_transplant(pointer node, pointer chil
 		node->parent->left = child;
 	else
 		node->parent->right = child;
-	if (child != _nil)
-		child->parent = node->parent;
+	child->parent = node->parent;
 }
 
 template <class T, class Compare, class Alloc, class Node>
@@ -457,7 +456,7 @@ void ft::rbtree<T, Compare, Alloc, Node>::_showTrunks(Trunk *p)
 template <class T, class Compare, class Alloc, class Node>
 void ft::rbtree<T, Compare, Alloc, Node>::_printTreeWithTrunks(pointer root, Trunk *prev, bool is_left)
 {
-	if (root == _nil)
+	if (root == NULL)
 		return;
 	std::string prev_str = "    ";
 	Trunk *trunk = new Trunk(prev, prev_str);

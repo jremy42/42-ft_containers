@@ -25,7 +25,7 @@ struct Trunk
 
 namespace ft
 {
-	template <class T, class Compare = std::less<ft::Node<T>> , class Alloc = std::allocator<ft::Node<T>>, class Node = ft::Node<T> >
+	template <class T, class Compare = std::less<ft::Node<T> > , class Alloc = std::allocator<ft::Node<T> >, class Node = ft::Node<T> >
 	class rbtree
 	{
 		typedef T value_type;
