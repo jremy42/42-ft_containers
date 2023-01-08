@@ -484,4 +484,35 @@ void ft::rbtree<T, Compare, Alloc, Node>::_printTreeWithTrunks(pointer root, Tru
 	_printTreeWithTrunks(root->left, trunk, false);
 }
 
+template <class T, class Compare, class Alloc, class Node>
+bool ft::rbtree<T, Compare, Alloc, Node>::is_valid_tree(void)
+{
+	return (_is_valid_tree(_root) && _is_equilibrated(_root));
+}
+
+template <class T, class Compare, class Alloc, class Node>
+bool ft::rbtree<T, Compare, Alloc, Node>::_is_valid_tree(pointer root)
+{
+	if (root == _nil)
+		return true;
+	if (root->_color == RED)
+	{
+		if (root->left->_color == RED || root->right->_color == RED)
+			return false;
+	}
+	return (is_valid_tree(root->left) && is_valid_tree(root->right));
+}
+
+template <class T, class Compare, class Alloc, class Node>
+bool ft::rbtree<T, Compare, Alloc, Node>::_is_equilibrated(pointer root)
+{
+	if (root == _nil)
+		return true;
+	int left = _findMax(root->left);
+	int right = _findMin(root->right);
+	if (abs(left - right) <= 1 && _is_valid_bst(root->left) && _is_valid_bst(root->right))
+		return true;
+	return false;
+	}
 #endif
+

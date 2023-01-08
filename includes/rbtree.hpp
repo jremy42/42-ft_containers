@@ -50,6 +50,7 @@ namespace ft
 			void clear(void);
 			int size(void);
 			pointer find(value_type data);
+			bool is_valid_tree(void);
 
 		private:
 			pointer _root;
@@ -74,6 +75,8 @@ namespace ft
 			void	_erase(pointer node);
 			pointer _findMin(pointer node);
 			pointer _findMax(pointer node);
+			bool	_is_valid_tree(pointer node);
+			bool	_is_equilibrated(pointer node);
 
 	};
 

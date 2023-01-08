@@ -1,7 +1,7 @@
 #include <iostream>
 #include "pair.hpp"
 #include "rbtree.hpp"
-
+#include "time.h"
 int main()
 {
   ft::rbtree<int> tree;
@@ -52,4 +52,32 @@ int main()
   std::cout << "find 2 " << tree2.find(2) << std::endl;
   std::cout << "find 3 " << tree2.find(15)->data << std::endl;
 
+  srand(time(NULL));
+  while(1)
+  {
+	int n;
+	for (int i = rand()%1000; i > 0; i--)
+	{
+		n = rand() % 100;
+		tree2.insert(n);
+	}
+	for (int i = rand()%1000; i > 0; i--)
+	{
+		n = rand() % 100;
+		tree2.find(n);
+	}
+	for (int i = rand()%1000; i > 0; i--)
+	{
+		n = rand() % 100;
+		tree2.erase(n);
+	}
+	tree2.print_tree();
+	if (tree2.is_valid_tree())
+		std::cout << "OK" << std::endl;
+	else
+	{
+		std::cout << "KO" << std::endl;
+		return 1;
+	}
+  }
 }
