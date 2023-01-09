@@ -22,6 +22,7 @@ ft::rbtree<T, Compare, Alloc, Node>::rbtree(void)
 	_nil->left = NULL;
 	_nil->right = NULL;
 	_nil->parent = NULL;
+	_nil->data = 666;
 	_root = _nil;
 }
 template <class T, class Compare, class Alloc, class Node>
@@ -33,6 +34,10 @@ ft::rbtree<T, Compare, Alloc, Node>::rbtree(const rbtree &other)
 template <class T, class Compare, class Alloc, class Node>
 ft::rbtree<T, Compare, Alloc, Node>::~rbtree()
 {
+	if (_root != _nil)
+		_clear(_root);
+	_alloc.destroy(_nil);
+	_alloc.deallocate(_nil, 1);
 }
 
 template <class T, class Compare, class Alloc, class Node>
@@ -51,12 +56,32 @@ void ft::rbtree<T, Compare, Alloc, Node>::print_tree(void)
 	_printTreeWithTrunks(_root, NULL, false);
 }
 
+template <class T, class Compare, class Alloc, class Node>
+void ft::rbtree<T, Compare, Alloc, Node>::clear(void)
+{
+	_clear(_root);
+	_root= _nil;
+}
+
+template <class T, class Compare, class Alloc, class Node>
+void ft::rbtree<T, Compare, Alloc, Node> ::_clear(pointer node)
+{
+	if (node == _nil)
+		return;
+	_clear(node->left);
+	_clear(node->right);
+	_alloc.destroy(node);
+	_alloc.deallocate(node, 1);
+}
+
 
 template <class T, class Compare, class Alloc, class Node>
 typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::insert(value_type data)
 {
 	pointer new_node;
 
+	if (find(data) != _nil)
+		return find(data);
 	try
 	{
 		new_node = _alloc.allocate(1);
@@ -69,9 +94,8 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 	new_node->left = _nil;
 	new_node->right = _nil;
 	new_node->_color = RED;
-	new_node->parent = NULL;
+	new_node->parent = _nil;
 	std::cout << "inserting " << new_node->data << std::endl;
-	std::cout << "new_node->color = " << new_node->_color << std::endl;
 	if (_root == _nil)
 	{
 		_root = new_node;
@@ -148,9 +172,12 @@ void ft::rbtree<T, Compare,Alloc, Node>::_insert_fixup(pointer new_node)
 					_rotate_left(new_node);
 				}
 				new_node->parent->_color = BLACK;
-				if (new_node->parent->parent != _nil && new_node->parent->parent != _root)
+				//if (new_node->parent->parent != _nil && new_node->parent->parent != _root)
 					new_node->parent->parent->_color = RED;
+				std::cout << "1" << std::endl;
+				print_tree();
 				_rotate_right(new_node->parent->parent);
+				print_tree();
 			}
 		}
 		else
@@ -169,10 +196,11 @@ void ft::rbtree<T, Compare,Alloc, Node>::_insert_fixup(pointer new_node)
 				if (new_node == new_node->parent->left)
 				{
 					new_node = new_node->parent;
+					std::cout << "2" << std::endl;
 					_rotate_right(new_node);
 				}
 				new_node->parent->_color = BLACK;
-				if (new_node->parent->parent != _nil && new_node->parent->parent != _root)
+				//if (new_node->parent->parent != _nil && new_node->parent->parent != _root)
 					new_node->parent->parent->_color = RED;
 				_rotate_left(new_node->parent->parent);
 			}
@@ -220,13 +248,14 @@ void ft::rbtree<T, Compare, Alloc, Node>::_erase(pointer node)
 		pointer successor = _findMin(node->right);
 		original_color = successor->_color;
 		pointer successor_right = successor->right;
+		node_to_fix = successor_right;
 		if (successor->parent == node)
 		{
 			std::cout << "successor->parent == node" << std::endl;
 			if (successor_right != _nil)
 			{
+				std::cout << "successor_right != _nil" << std::endl;
 				successor_right->parent = successor;
-				node_to_fix = successor_right;
 			}
 		}
 		else
@@ -240,7 +269,7 @@ void ft::rbtree<T, Compare, Alloc, Node>::_erase(pointer node)
 		successor->left = node->left;
 		successor->left->parent = successor;
 		successor->_color = node->_color;
-		node_to_fix = successor_right;
+
 	}
 	_alloc.destroy(node_to_del);
 	_alloc.deallocate(node_to_del, 1);
@@ -257,35 +286,43 @@ void ft::rbtree<T, Compare, Alloc, Node>::_delete_fixup(pointer node)
 	std::cout << "node: " << node->data << std::endl;
 	print_tree();
 	pointer sibling = NULL;
+	std::cout << "print node: " << std::endl;
+	_printTreeWithTrunks(node, NULL, false);
+	std::cout << "node parent: " << node->parent->data << std::endl;
+	if (node == _nil && node->parent == _nil)
+		return ;
 	while (node != _root && node->_color == BLACK)
 	{
 		if (node == node->parent->left)
 		{
 			sibling = node->parent->right;
-			if (sibling->_color == RED)
+			std::cout << "sibling " << sibling->data << std::endl;
+			if (sibling && sibling->_color == RED)
 			{
 				sibling->_color = BLACK;
 				node->parent->_color = RED;
 				_rotate_left(node->parent);
 				sibling = node->parent->right;
 			}
-			if (sibling->left->_color == BLACK && sibling->right->_color == BLACK)
+			if ((sibling->left && sibling->left->_color == BLACK) && (sibling->right && sibling->right->_color == BLACK))
 			{
 				sibling->_color = RED;
 				node = node->parent;
 			}
 			else
 			{
-				if (sibling->right->_color == BLACK)
+				if (sibling && sibling->right->_color == BLACK)
 				{
 					sibling->left->_color = BLACK;
 					sibling->_color = RED;
 					_rotate_right(sibling);
 					sibling = node->parent->right;
 				}
-				sibling->_color = node->parent->_color;
+				if (sibling)
+					sibling->_color = node->parent->_color;
 				node->parent->_color =BLACK;
-				sibling->right->_color = BLACK;
+				if (sibling && sibling->right)
+					sibling->right->_color = BLACK;
 				_rotate_left(node->parent);
 				node = _root;
 			}
@@ -293,30 +330,32 @@ void ft::rbtree<T, Compare, Alloc, Node>::_delete_fixup(pointer node)
 		else 
 		{
 			sibling = node->parent->left;
-			if (sibling->_color == RED)
+			if (sibling && sibling->_color == RED)
 			{
 				sibling->_color = BLACK;
 				node->parent->_color = RED;
 				_rotate_right(node->parent);
 				sibling = node->parent->left;
 			}
-			if (sibling->right->_color == BLACK && sibling->left->_color == BLACK)
+			if (sibling && sibling->right->_color == BLACK && sibling->left->_color == BLACK)
 			{
 				sibling->_color = RED;
 				node = node->parent;
 			}
 			else
 			{
-				if (sibling->left->_color == BLACK)
+				if (sibling && sibling->left->_color == BLACK)
 				{
 					sibling->right->_color = BLACK;
 					sibling->_color = RED;
 					_rotate_left(sibling);
 					sibling = node->parent->left;
 				}
-				sibling->_color = node->parent->_color;
+				if (sibling)
+					sibling->_color = node->parent->_color;
 				node->parent->_color = BLACK;
-				sibling->left->_color = BLACK;
+				if (sibling && sibling->left)
+					sibling->left->_color = BLACK;
 				_rotate_right(node->parent);
 				node = _root;
 			}
@@ -349,7 +388,7 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 template <class T, class Compare, class Alloc, class Node>
 typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::_findMin(pointer root)
 {
-	if (root == _nil)
+	if (!root || root == _nil)
 		return (_nil);
 	if (root->left == _nil)
 		return (root);
@@ -359,7 +398,7 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 template <class T, class Compare, class Alloc, class Node>
 typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::_findMax(pointer root)
 {
-	if (root == _nil)
+	if (!root || root == _nil)
 		return (_nil);
 	if (root->right == _nil)
 		return (root);
@@ -369,12 +408,16 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 template <class T, class Compare, class Alloc, class Node>
 void ft::rbtree<T, Compare, Alloc, Node>::_transplant(pointer node, pointer child)
 {
+	std::cout << "transplant" << std::endl;
+	std::cout << "node " << node->data << std::endl;
+	std::cout << "child " << child->data << std::endl;
 	if (node->parent == _nil)
 		_root = child;
 	else if (node == node->parent->left)
 		node->parent->left = child;
 	else
 		node->parent->right = child;
+	std::cout << "node->parent " << node->parent->data << std::endl;
 	child->parent = node->parent;
 }
 
@@ -386,6 +429,8 @@ void ft::rbtree<T, Compare, Alloc, Node>::_rotate_left(pointer node)
 	// a is the left child of x
 	// b is the left child of y
 	// p is the parent of x
+	std::cout << "rotate left" << std::endl;
+	std::cout << "node" << node->data << std::endl;
 	pointer right_child = node->right;
 	node->right = right_child->left;
 	if (right_child->left != _nil)
@@ -410,6 +455,8 @@ void ft::rbtree<T, Compare, Alloc, Node>::_rotate_right(pointer node)
 	// a is the right child of x
 	// b is the right child of y
 	// p is the parent of x
+	std::cout << "rotate right" << std::endl;
+	std::cout << "node" << node->data << std::endl;
 	pointer left_child = node->left;
 	node->left = left_child->right;
 	if (left_child->right != _nil)
@@ -500,7 +547,7 @@ bool ft::rbtree<T, Compare, Alloc, Node>::_is_valid_tree(pointer root)
 		if (root->left->_color == RED || root->right->_color == RED)
 			return false;
 	}
-	return (is_valid_tree(root->left) && is_valid_tree(root->right));
+	return (_is_valid_tree(root->left) && _is_valid_tree(root->right));
 }
 
 template <class T, class Compare, class Alloc, class Node>
@@ -508,11 +555,56 @@ bool ft::rbtree<T, Compare, Alloc, Node>::_is_equilibrated(pointer root)
 {
 	if (root == _nil)
 		return true;
-	int left = _findMax(root->left);
-	int right = _findMin(root->right);
-	if (abs(left - right) <= 1 && _is_valid_bst(root->left) && _is_valid_bst(root->right))
+	int left_depth = _depthMin(root->left, 0);
+	int right_depth = _depthMax(root->right, 0);
+	if (left_depth - right_depth > 1 || right_depth - left_depth > 1)
+		return false;
+	return (_is_equilibrated(root->left) && _is_equilibrated(root->right));
+}
+
+template <class T, class Compare, class Alloc, class Node>
+int ft::rbtree<T, Compare, Alloc, Node>::_depthMin(pointer root, int depth)
+{
+	if (root == _nil)
+		return depth;
+	return _depthMin(root->left, depth + 1);
+}
+
+template <class T, class Compare, class Alloc, class Node>
+int ft::rbtree<T, Compare, Alloc, Node>::_depthMax(pointer root, int depth)
+{
+	if (root == _nil)
+		return depth;
+	return _depthMax(root->right, depth + 1);
+}
+
+template <class T, class Compare, class Alloc, class Node>
+bool ft::rbtree<T, Compare, Alloc, Node>::check_black_balanced(pointer node)
+{
+	if (node == _nil)
 		return true;
-	return false;
-	}
+	int black_depth_left = _depthBlack(node->left);
+	int black_depth_right= _depthBlack(node->right);
+	if (black_depth_left != black_depth_right)
+		return false;
+	return (check_black_balanced(node->left) && check_black_balanced(node->right));
+}
+template <class T, class Compare, class Alloc, class Node>
+int ft::rbtree<T, Compare, Alloc, Node>::_depthBlack(pointer root)
+{
+	if (root == _nil)
+		return 1;
+	if (root->_color == BLACK)
+		return ( 1 + _depthBlack(root->left));
+	else
+		return (_depthBlack(root->left));
+
+}
+
+template <class T, class Compare, class Alloc, class Node>
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::getRoot(void)
+{
+	return _root;
+}
 #endif
 

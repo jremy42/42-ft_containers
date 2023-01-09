@@ -355,7 +355,8 @@ class RedBlackTree {
   // Inserting a node
   void insert(int key) {
     NodePtr node = new Node;
-    node->parent = nullptr;
+    node->parent = nullptr;    if (y->left != TNULL) {
+
     node->data = key;
     node->left = TNULL;
     node->right = TNULL;

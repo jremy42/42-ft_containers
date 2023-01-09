@@ -51,6 +51,8 @@ namespace ft
 			int size(void);
 			pointer find(value_type data);
 			bool is_valid_tree(void);
+			bool check_black_balanced(pointer node);
+			pointer getRoot(void);
 
 		private:
 			pointer _root;
@@ -77,6 +79,11 @@ namespace ft
 			pointer _findMax(pointer node);
 			bool	_is_valid_tree(pointer node);
 			bool	_is_equilibrated(pointer node);
+			int		_depthMin(pointer node, int depth);
+			int		_depthMax(pointer node, int depth);
+			int 	_depthBlack(pointer node);
+		
+
 
 	};
 
