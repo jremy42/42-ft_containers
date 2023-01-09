@@ -8,18 +8,25 @@
 #include "is_integrale.hpp"
 #include "enable_if.hpp"
 #include "distance.hpp"
-#include "binary_function.hpp"
+#include "binary_predicate.hpp"
+#include "pair.hpp"
+#include "rbtree.hpp"
+#include "node_iterator.hpp"
+#include "node.hpp"
 
 namespace ft{
 
-	template< class Key, class T, class Compare = ft::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T>> >
+	template< class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
 	class map
 	{
 		public: 
 		typedef Key key_type;
 		typedef T mapped_type;
 		typedef std::pair<const key_type, mapped_type> value_type;
+		typedef ft::rbtree<ft::pair<const Key, T>, Compare, std::allocator<ft::Node<value_type> > > tree_type;
 		typedef Compare key_compare;
+		//value_compare is a binary predicate that takes two element keys as arguments and returns a bool.
+		//typedef typename tree_type::key_compare value_compare;
 		typedef Allocator allocator_type;
 		typedef typename allocator_type::reference reference;
 		typedef typename allocator_type::const_reference const_reference;
@@ -87,17 +94,15 @@ namespace ft{
 		const_iterator upper_bound(const key_type& k) const;
 		// observers
 		key_compare key_comp() const;
-		value_compare value_comp() const;
+	//value_compare value_comp() const;
 		private :
+			tree_type _tree;
 			allocator_type _alloc;
 			key_compare _comp;
 			size_type _size;
-			ft::node<value_type> *_root;
-			ft::node<value_type> *_end;
+			ft::Node<value_type> *_root;
+			ft::Node<value_type> *_end;
 	};
-
-
-
-		
-}
+	#include "map.tpp"
+};
 #endif

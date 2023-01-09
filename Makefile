@@ -14,9 +14,9 @@ DEPS        := $(subst .o,.d,$(OBJS))
 CXX         := c++
 
 ifeq ($(MAKECMDGOALS), std)
-	CXXFLAGS    := -Wall -Wextra -Werror -MMD -MP -I includes -g3 -D NAMESPACE=std
+	CXXFLAGS    := -Wall -Wextra -Werror -std=c++98 -MMD -MP -I includes -g3 -D NAMESPACE=std
 else
-	CXXFLAGS    := -Wall -Wextra -Werror -MMD -MP -I includes -g3
+	CXXFLAGS    := -Wall -Wextra -Werror -std=c++98 -MMD -MP -I includes -g3
 endif
 
 RM          := rm -rf

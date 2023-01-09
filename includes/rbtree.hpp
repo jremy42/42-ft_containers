@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include "node_iterator.hpp"
 
 struct Trunk
 {
@@ -37,19 +38,20 @@ namespace ft
 		typedef typename allocator_type::difference_type difference_type;
 		typedef typename allocator_type::size_type size_type;
 		typedef Compare key_compare;
-
+		typedef ft::node_iterator<value_type, std::bidirectional_iterator_tag> iterator;
 		public:
 			rbtree(void);
+			rbtree(const key_compare &comp);
 			rbtree(const rbtree &other);
 			~rbtree();	
 			rbtree &operator=(const rbtree &other);
 			
-			pointer insert(value_type data);
-			bool erase(value_type data);
+			pointer insert(const value_type data);
+			bool erase(const value_type data);
 			void print_tree(void);
 			void clear(void);
 			int size(void);
-			pointer find(value_type data);
+			pointer find(const value_type data);
 			bool is_valid_tree(void);
 			bool check_black_balanced(pointer node);
 			pointer getRoot(void);
@@ -73,7 +75,7 @@ namespace ft
 			void _showTrunks(Trunk *p);
 			void _printTreeWithTrunks(pointer root, Trunk *prev, bool isLeft);
 			void _clear(pointer node);
-			pointer _find(pointer node, value_type data);
+			pointer _find(pointer node, const value_type data);
 			void	_erase(pointer node);
 			pointer _findMin(pointer node);
 			pointer _findMax(pointer node);

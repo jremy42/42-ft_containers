@@ -15,14 +15,15 @@
 template <class T, class Compare, class Alloc, class Node>
 ft::rbtree<T, Compare, Alloc, Node>::rbtree(void)
 {
-
+	value_type value;
+	_alloc = allocator_type();
 	_nil = _alloc.allocate(1);
-	_alloc.construct(_nil, value_type());
+	_alloc.construct(_nil, Node(value, BLACK));
 	_nil->_color = BLACK;
 	_nil->left = NULL;
 	_nil->right = NULL;
 	_nil->parent = NULL;
-	_nil->data = 666;
+	_nil->data = 0;
 	_root = _nil;
 }
 template <class T, class Compare, class Alloc, class Node>
@@ -30,6 +31,22 @@ ft::rbtree<T, Compare, Alloc, Node>::rbtree(const rbtree &other)
 {
 	*this = other;
 }
+
+template <class T,class Compare, class Alloc, class Node>
+ft::rbtree<T, Compare, Alloc, Node>::rbtree(const key_compare &comp)
+{
+	value_type value;
+	_nil = _alloc.allocate(1);
+	_alloc.construct(_nil, Node(value, BLACK));
+	_nil->_color = BLACK;
+	_nil->left = NULL;
+	_nil->right = NULL;
+	_nil->parent = NULL;
+	_nil->data = 0;
+	_root = _nil;
+	_comp = comp;
+}
+
 
 template <class T, class Compare, class Alloc, class Node>
 ft::rbtree<T, Compare, Alloc, Node>::~rbtree()
@@ -43,10 +60,8 @@ ft::rbtree<T, Compare, Alloc, Node>::~rbtree()
 template <class T, class Compare, class Alloc, class Node>
 ft::rbtree<T, Compare, Alloc, Node> &ft::rbtree<T, Compare, Alloc, Node>::operator=(const rbtree &other)
 {
-	if (this != &other)
-	{
-		_root = other._root;
-	}
+	for (iterator it = other.begin(); it != other.end(); ++it)
+		insert(*it);
 	return *this;
 }
 
@@ -76,7 +91,7 @@ void ft::rbtree<T, Compare, Alloc, Node> ::_clear(pointer node)
 
 
 template <class T, class Compare, class Alloc, class Node>
-typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::insert(value_type data)
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::insert(const value_type data)
 {
 	pointer new_node;
 
@@ -90,12 +105,12 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 	{
 		std::cerr << e.what() << '\n';
 	}
-	_alloc.construct(new_node, value_type(data));
+	_alloc.construct(new_node, Node(data));
 	new_node->left = _nil;
 	new_node->right = _nil;
 	new_node->_color = RED;
 	new_node->parent = _nil;
-	std::cout << "inserting " << new_node->data << std::endl;
+	//std::cout << "inserting " << new_node->data << std::endl;
 	if (_root == _nil)
 	{
 		_root = new_node;
@@ -117,7 +132,7 @@ void ft::rbtree<T, Compare, Alloc, Node>::_insert_tree_preorder_mode(pointer roo
 	{
 		_root = new_node;
 	}
-	else if (new_node->data < root->data)
+	else if (_comp(new_node->data, root->data))
 	{
 		if (root->left == _nil)
 		{
@@ -172,12 +187,8 @@ void ft::rbtree<T, Compare,Alloc, Node>::_insert_fixup(pointer new_node)
 					_rotate_left(new_node);
 				}
 				new_node->parent->_color = BLACK;
-				//if (new_node->parent->parent != _nil && new_node->parent->parent != _root)
-					new_node->parent->parent->_color = RED;
-				std::cout << "1" << std::endl;
-				print_tree();
+				new_node->parent->parent->_color = RED;
 				_rotate_right(new_node->parent->parent);
-				print_tree();
 			}
 		}
 		else
@@ -196,12 +207,10 @@ void ft::rbtree<T, Compare,Alloc, Node>::_insert_fixup(pointer new_node)
 				if (new_node == new_node->parent->left)
 				{
 					new_node = new_node->parent;
-					std::cout << "2" << std::endl;
 					_rotate_right(new_node);
 				}
 				new_node->parent->_color = BLACK;
-				//if (new_node->parent->parent != _nil && new_node->parent->parent != _root)
-					new_node->parent->parent->_color = RED;
+				new_node->parent->parent->_color = RED;
 				_rotate_left(new_node->parent->parent);
 			}
 		}
@@ -210,7 +219,7 @@ void ft::rbtree<T, Compare,Alloc, Node>::_insert_fixup(pointer new_node)
 }
 
 template <class T, class Compare, class Alloc, class Node>
-bool ft::rbtree<T, Compare, Alloc, Node>::erase(value_type data)
+bool ft::rbtree<T, Compare, Alloc, Node>::erase(const value_type data)
 {
 	pointer node = _find(_root, data);
 	if (node == _nil)
@@ -222,21 +231,17 @@ bool ft::rbtree<T, Compare, Alloc, Node>::erase(value_type data)
 template <class T, class Compare, class Alloc, class Node>
 void ft::rbtree<T, Compare, Alloc, Node>::_erase(pointer node)
 {
-	std::cout << "erase " << node->data << std::endl;
 	// successor == y
 	int original_color = node->_color;
 	pointer node_to_del = node;
 	pointer node_to_fix = _nil;
 	if (node->left == _nil)
 	{
-		std::cout << "left == NULL" << std::endl;
 		node_to_fix = node->right;
-		std::cout << "node_to_fix " << node_to_fix << std::endl;
 		_transplant(node, node->right);
 	}
 	else if (node->right == _nil)
 	{
-		std::cout << "right == NULL" << std::endl;
 		node_to_fix = node->left;
 		_transplant(node, node->left);
 	}
@@ -244,23 +249,16 @@ void ft::rbtree<T, Compare, Alloc, Node>::_erase(pointer node)
 	{
 		// successor == y
 		// successor_right == x
-		std::cout << "left != NULL && right != NULL" << std::endl;
 		pointer successor = _findMin(node->right);
 		original_color = successor->_color;
 		pointer successor_right = successor->right;
 		node_to_fix = successor_right;
 		if (successor->parent == node)
 		{
-			std::cout << "successor->parent == node" << std::endl;
-			if (successor_right != _nil)
-			{
-				std::cout << "successor_right != _nil" << std::endl;
-				successor_right->parent = successor;
-			}
+			successor_right->parent = successor;
 		}
 		else
 		{
-			std::cout << "successor->parent != node" << std::endl;
 			_transplant(successor, successor_right);
 			successor->right = node->right;
 			successor->right->parent = successor;
@@ -282,13 +280,12 @@ void ft::rbtree<T, Compare, Alloc, Node>::_delete_fixup(pointer node)
 {
 	// node == x
 	//sibling == w
-	std::cout << "delete fixup" << std::endl;
-	std::cout << "node: " << node->data << std::endl;
-	print_tree();
+//	std::cout << "delete fixup" << std::endl;
+	//std::cout << "node: " << node->data << std::endl;
 	pointer sibling = NULL;
-	std::cout << "print node: " << std::endl;
-	_printTreeWithTrunks(node, NULL, false);
-	std::cout << "node parent: " << node->parent->data << std::endl;
+	//std::cout << "print node: " << std::endl;
+	//_printTreeWithTrunks(node, NULL, false);
+	//std::cout << "node parent: " << node->parent->data << std::endl;
 	if (node == _nil && node->parent == _nil)
 		return ;
 	while (node != _root && node->_color == BLACK)
@@ -296,7 +293,7 @@ void ft::rbtree<T, Compare, Alloc, Node>::_delete_fixup(pointer node)
 		if (node == node->parent->left)
 		{
 			sibling = node->parent->right;
-			std::cout << "sibling " << sibling->data << std::endl;
+			//std::cout << "sibling " << sibling->data << std::endl;
 			if (sibling && sibling->_color == RED)
 			{
 				sibling->_color = BLACK;
@@ -367,13 +364,13 @@ void ft::rbtree<T, Compare, Alloc, Node>::_delete_fixup(pointer node)
 
 
 template <class T, class Compare, class Alloc, class Node>
-typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::find(value_type data)
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::find(const value_type data)
 {
 	return (_find(_root, data));
 }
 
 template <class T, class Compare, class Alloc, class Node>
-typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::_find(pointer root, value_type data)
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::_find(pointer root, const value_type data)
 {
 	if (root == _nil)
 		return (_nil);
@@ -408,16 +405,16 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 template <class T, class Compare, class Alloc, class Node>
 void ft::rbtree<T, Compare, Alloc, Node>::_transplant(pointer node, pointer child)
 {
-	std::cout << "transplant" << std::endl;
-	std::cout << "node " << node->data << std::endl;
-	std::cout << "child " << child->data << std::endl;
+	//std::cout << "transplant" << std::endl;
+	//std::cout << "node " << node->data << std::endl;
+	//std::cout << "child " << child->data << std::endl;
 	if (node->parent == _nil)
 		_root = child;
 	else if (node == node->parent->left)
 		node->parent->left = child;
 	else
 		node->parent->right = child;
-	std::cout << "node->parent " << node->parent->data << std::endl;
+	//std::cout << "node->parent " << node->parent->data << std::endl;
 	child->parent = node->parent;
 }
 
@@ -429,8 +426,8 @@ void ft::rbtree<T, Compare, Alloc, Node>::_rotate_left(pointer node)
 	// a is the left child of x
 	// b is the left child of y
 	// p is the parent of x
-	std::cout << "rotate left" << std::endl;
-	std::cout << "node" << node->data << std::endl;
+	//std::cout << "rotate left" << std::endl;
+	//std::cout << "node" << node->data << std::endl;
 	pointer right_child = node->right;
 	node->right = right_child->left;
 	if (right_child->left != _nil)
@@ -455,8 +452,8 @@ void ft::rbtree<T, Compare, Alloc, Node>::_rotate_right(pointer node)
 	// a is the right child of x
 	// b is the right child of y
 	// p is the parent of x
-	std::cout << "rotate right" << std::endl;
-	std::cout << "node" << node->data << std::endl;
+	//std::cout << "rotate right" << std::endl;
+	//std::cout << "node" << node->data << std::endl;
 	pointer left_child = node->left;
 	node->left = left_child->right;
 	if (left_child->right != _nil)
@@ -606,5 +603,7 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 {
 	return _root;
 }
+
+
 #endif
 
