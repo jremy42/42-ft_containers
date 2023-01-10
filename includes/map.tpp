@@ -61,6 +61,10 @@ typename ft::map<Key, T, Compare, Alloc>::allocator_type ft::map<Key, T, Compare
  * 	element access
  ******************************************** */
 
+
+/* ********************************************
+ * 	modifier
+ ******************************************** */
 template <class Key, class T, class Compare, class Alloc>
 ft::pair<typename ft::map<Key, T, Compare, Alloc>::iterator, bool> ft::map<Key, T, Compare, Alloc>::insert(const value_type& val)
 {
@@ -70,6 +74,11 @@ ft::pair<typename ft::map<Key, T, Compare, Alloc>::iterator, bool> ft::map<Key, 
 		return ft::make_pair(iterator(_tree.insert(val), _tree.getRoot(), _tree.getNil()), true);
 }
 
+template <class Key, class T, class Compare, class Alloc>
+typename ft::map<Key, T, Compare, Alloc>::size_type ft::map<Key, T, Compare, Alloc>::erase(const key_type& k)
+{
+	return _tree.erase(ft::make_pair(k, mapped_type()));
+}
 
 template <class Key, class T, class Compare, class Alloc>
 void ft::map<Key, T, Compare, Alloc>::print(void)
