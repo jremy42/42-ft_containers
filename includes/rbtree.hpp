@@ -26,7 +26,7 @@ struct Trunk
 
 namespace ft
 {
-	template <class T, class Compare = std::less<ft::Node<T> > , class Alloc = std::allocator<ft::Node<T> >, class Node = ft::Node<T> >
+	template <class T, class Compare, class Alloc = std::allocator<ft::Node<T> >, class Node = ft::Node<T> >
 	class rbtree
 	{
 		typedef T value_type;
@@ -39,9 +39,10 @@ namespace ft
 		typedef typename allocator_type::size_type size_type;
 		typedef Compare key_compare;
 		typedef ft::node_iterator<value_type, std::bidirectional_iterator_tag> iterator;
+
 		public:
 			rbtree(void);
-			rbtree(const key_compare &comp);
+			rbtree(const key_compare &comp = key_compare());
 			rbtree(const rbtree &other);
 			~rbtree();	
 			rbtree &operator=(const rbtree &other);
@@ -55,6 +56,7 @@ namespace ft
 			bool is_valid_tree(void);
 			bool check_black_balanced(pointer node);
 			pointer getRoot(void);
+			pointer getNil(void);
 
 		private:
 			pointer _root;

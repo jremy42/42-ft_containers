@@ -33,7 +33,7 @@ ft::rbtree<T, Compare, Alloc, Node>::rbtree(const rbtree &other)
 }
 
 template <class T,class Compare, class Alloc, class Node>
-ft::rbtree<T, Compare, Alloc, Node>::rbtree(const key_compare &comp)
+ft::rbtree<T, Compare, Alloc, Node>::rbtree(const key_compare &comp) : _comp(comp)
 {
 	value_type value;
 	_nil = _alloc.allocate(1);
@@ -42,9 +42,7 @@ ft::rbtree<T, Compare, Alloc, Node>::rbtree(const key_compare &comp)
 	_nil->left = NULL;
 	_nil->right = NULL;
 	_nil->parent = NULL;
-	_nil->data = 0;
 	_root = _nil;
-	_comp = comp;
 }
 
 
@@ -95,7 +93,7 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 {
 	pointer new_node;
 
-	if (find(data) != _nil)
+	if (find(data) != NULL)
 		return find(data);
 	try
 	{
@@ -110,7 +108,7 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 	new_node->right = _nil;
 	new_node->_color = RED;
 	new_node->parent = _nil;
-	//std::cout << "inserting " << new_node->data << std::endl;
+	std::cout << "inserting " << new_node->data << std::endl;
 	if (_root == _nil)
 	{
 		_root = new_node;
@@ -373,8 +371,8 @@ template <class T, class Compare, class Alloc, class Node>
 typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::_find(pointer root, const value_type data)
 {
 	if (root == _nil)
-		return (_nil);
-	if (root->data == data)
+		return (NULL);
+	if (root->data.first == data.first)
 		return (root);
 	if (data < root->data)
 		return (_find(root->left, data));
@@ -604,6 +602,10 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 	return _root;
 }
 
+template <class T, class Compare, class Alloc, class Node>
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::getNil(void)
+{
+		return _nil;
+}
 
 #endif
-

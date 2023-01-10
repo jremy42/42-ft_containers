@@ -17,9 +17,11 @@ class node_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
 		typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::pointer pointer;
 		typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::reference reference;
 		typedef Node node_type;
+		typedef const Node const_node_type;
 		typedef node_iterator<T, Node> self_type;
 		typedef node_iterator<T, Node> iterator;
 		typedef node_iterator<T, Node> const_iterator;
+		
 	private:
 		node_type *_node;
 		node_type *_nil;

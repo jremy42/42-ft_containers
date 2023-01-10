@@ -8,7 +8,6 @@ namespace ft{
 	template <class T>
 	struct Node
 	{
-		public:
 			typedef T value_type;
 			typedef Node self;
 			Node(bool color = RED) : parent(NULL), left(NULL), right(NULL) { color = _color;};

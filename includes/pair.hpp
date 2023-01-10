@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include "vector.hpp"
 #include "iterator.hpp"
+#include <ostream>
 
 namespace ft{
 
@@ -44,6 +45,14 @@ namespace ft{
 	bool operator>= (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs) { return !(lhs < rhs); };
 	template <class T1, class T2>
 	pair<T1, T2> make_pair (T1 x, T2 y) { return ( pair<T1, T2>(x,y) ); };
+	//overload <<
+
 }
+	template <class T1, class T2>
+	std::ostream &operator<<(std::ostream &out, const ft::pair<T1, T2> &p) {
+		out << "[" << p.first << "|" << p.second << "]" << std::endl;
+		return (out);
+	}
+
 
 #endif

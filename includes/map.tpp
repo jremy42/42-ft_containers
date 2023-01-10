@@ -10,7 +10,7 @@
  ******************************************** */
 
 template <class Key, class T, class Compare, class Alloc>
-ft::map<Key, T, Compare, Alloc>::map(const key_compare& comp, const allocator_type& alloc) : _tree(comp)
+ft::map<Key, T, Compare, Alloc>::map(const key_compare& comp, const allocator_type& alloc) : _tree(value_compare(comp))
 {
 	_alloc = alloc;
 }
@@ -64,9 +64,16 @@ typename ft::map<Key, T, Compare, Alloc>::allocator_type ft::map<Key, T, Compare
 template <class Key, class T, class Compare, class Alloc>
 ft::pair<typename ft::map<Key, T, Compare, Alloc>::iterator, bool> ft::map<Key, T, Compare, Alloc>::insert(const value_type& val)
 {
-	if (_tree.find(val.first))
-		return ft::pair<iterator, bool>(_tree.find(val.first), false);
+	if (_tree.find(val))
+		return ft::make_pair(iterator(_tree.find(val), _tree.getRoot(), _tree.getNil()), false);
 	else
-		return ft::pair<iterator, bool>(_tree.insert(val), true);
+		return ft::make_pair(iterator(_tree.insert(val), _tree.getRoot(), _tree.getNil()), true);
+}
+
+
+template <class Key, class T, class Compare, class Alloc>
+void ft::map<Key, T, Compare, Alloc>::print(void)
+{
+	_tree.print_tree();
 }
 #endif

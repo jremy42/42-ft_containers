@@ -12,5 +12,8 @@ int main()
 {
 	ft::map<int, int> map;
 	map.insert(ft::make_pair(1, 1));
-  
+	map.insert(ft::make_pair(2, 2));
+	map.insert(ft::make_pair(3, 3));
+	map.insert(ft::make_pair(4, 4));
+	map.print();
 }

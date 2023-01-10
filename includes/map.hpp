@@ -22,10 +22,9 @@ namespace ft{
 		public: 
 		typedef Key key_type;
 		typedef T mapped_type;
-		typedef std::pair<const key_type, mapped_type> value_type;
+		typedef ft::pair<const key_type, mapped_type> value_type;
 		typedef	value_type& reference;
 		typedef const value_type& const_reference;
-		typedef ft::rbtree<value_type, Compare, std::allocator<ft::Node<value_type> > > tree_type;
 		typedef Compare key_compare;
 		//value_compare is a binary predicate that takes two element keys as arguments and returns a bool.
 		//typedef typename tree_type::key_compare value_compare;
@@ -34,10 +33,34 @@ namespace ft{
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef typename allocator_type::difference_type difference_type;
 		typedef typename allocator_type::size_type size_type;
-		typedef ft::random_access_iterator<value_type> iterator;
-		typedef ft::random_access_iterator<const value_type> const_iterator;
+		typedef typename ft::node_iterator<value_type, ft::Node<value_type> > iterator;
+		typedef typename ft::node_iterator<const value_type, ft::Node<value_type> > const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+
+		class value_compare : public std::binary_function<value_type, value_type, bool>
+		{
+			friend class map;
+
+			protected:
+				Compare comp;
+				value_compare(Compare c) : comp(c) {}
+			public:
+				typedef bool result_type;
+				typedef value_type first_argument_type;
+				typedef value_type second_argument_type;
+				value_compare& operator=(const value_compare& x)
+				{
+					comp = x.comp;
+					return *this;
+				}
+				bool operator()(const value_type& x, const value_type& y) const
+				{
+					return comp(x.first, y.first);
+				}
+		};
+		typedef ft::rbtree<value_type, value_compare, std::allocator<ft::Node<value_type> > > tree_type;
+
 
 		// Constructors
 		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
@@ -94,7 +117,10 @@ namespace ft{
 		const_iterator upper_bound(const key_type& k) const;
 		// observers
 		key_compare key_comp() const;
-	//value_compare value_comp() const;
+		value_compare value_comp() const;
+
+		// print
+		void print(void);
 		private :
 			tree_type _tree;
 			allocator_type _alloc;
@@ -103,6 +129,8 @@ namespace ft{
 			ft::Node<value_type> *_root;
 			ft::Node<value_type> *_end;
 	};
+	//overload << map
+	
 	#include "map.tpp"
 };
 #endif
