@@ -33,8 +33,8 @@ namespace ft{
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef typename allocator_type::difference_type difference_type;
 		typedef typename allocator_type::size_type size_type;
-		typedef typename ft::node_iterator<value_type, ft::Node<value_type> > iterator;
-		typedef typename ft::node_iterator<const value_type, ft::Node<value_type> > const_iterator;
+		typedef typename ft::node_iterator<value_type > iterator;
+		typedef typename ft::node_iterator<const value_type > const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -96,7 +96,6 @@ namespace ft{
 		//modifiers
 
 		ft::pair<iterator,bool> insert(const value_type& val);
-		iterator insert(iterator position, const value_type& val);
 		template <class InputIterator>
 		void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0);
 		void erase(iterator position);

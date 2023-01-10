@@ -38,7 +38,7 @@ namespace ft
 		typedef typename allocator_type::difference_type difference_type;
 		typedef typename allocator_type::size_type size_type;
 		typedef Compare key_compare;
-		typedef ft::node_iterator<value_type, std::bidirectional_iterator_tag> iterator;
+		typedef ft::node_iterator<value_type> iterator;
 
 		public:
 			rbtree(void);
@@ -47,16 +47,24 @@ namespace ft
 			~rbtree();	
 			rbtree &operator=(const rbtree &other);
 			
-			pointer insert(const value_type data);
-			bool erase(const value_type data);
+			//lookup
 			void print_tree(void);
-			void clear(void);
 			int size(void);
 			pointer find(const value_type data);
-			bool is_valid_tree(void);
+			bool is_valid_tree(void); // deprecated
 			bool check_black_balanced(pointer node);
-			pointer getRoot(void);
-			pointer getNil(void);
+
+
+			// modifier
+			void clear(void);
+			pointer insert(const value_type data);
+			bool erase(const value_type data);
+
+			// get
+			pointer getRoot(void) const;
+			pointer getNil(void) const;
+			pointer getMin(void) const;
+			pointer getMax(void) const;
 
 		private:
 			pointer _root;
@@ -79,13 +87,14 @@ namespace ft
 			void _clear(pointer node);
 			pointer _find(pointer node, const value_type data);
 			void	_erase(pointer node);
-			pointer _findMin(pointer node);
-			pointer _findMax(pointer node);
+			pointer _findMin(pointer node) const;
+			pointer _findMax(pointer node) const;
 			bool	_is_valid_tree(pointer node);
 			bool	_is_equilibrated(pointer node);
 			int		_depthMin(pointer node, int depth);
 			int		_depthMax(pointer node, int depth);
 			int 	_depthBlack(pointer node);
+			int		_getSize(pointer node);
 		
 
 

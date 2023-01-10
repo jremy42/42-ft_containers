@@ -1,22 +1,34 @@
+#include "vector.hpp"
 #include <iostream>
-#include "pair.hpp"
-#include "rbtree.hpp"
-#include "time.h"
 #include <vector>
-#include <unistd.h>
-#include <cstdlib>
-#include <ctime>
-#include <algorithm>
 #include "map.hpp"
+#include <map>
+
+#ifndef NAMESPACE
+# define NAMESPACE ft
+#endif
+class A
+{
+public:
+	A() {}
+	~A() {}
+	A(A const &a) { (void)a; }
+	A &operator=(A const &a) { (void)a; return *this; }
+};
+
 int main()
 {
-	ft::map<int, int> map;
-	map.insert(ft::make_pair(2, 1));
-	map.insert(ft::make_pair(1, 2));
-	map.insert(ft::make_pair(9, 3));
-	map.insert(ft::make_pair(8, 4));
-	map.insert(ft::make_pair(6, 4));
-	map.print();
-	map.erase(8);
-	map.print();
+	std::cout << "map insert test" << std::endl;
+	NAMESPACE::map<int, int> m;
+	for (int i = 0; i < 10; i++)
+	{
+		m.insert(NAMESPACE::make_pair(i, i + 3));
+		std::cout << "insert" << i << std::endl;
+	}
+	NAMESPACE::map<int, int>::iterator ite = m.end();
+
+	std::cout << ite->first << std::endl;
+
+	
+	return 0;
 }
