@@ -43,27 +43,15 @@ ft::rbtree<T, Compare, Alloc, Node>::rbtree(const key_compare &comp) : _comp(com
 }
 
 template <class T, class Compare, class Alloc, class Node>
-ft::rbtree<T, Compare, Alloc, Node>::rbtree(const rbtree &other)
-{
-	*this = other;
-}
-
-
-template <class T, class Compare, class Alloc, class Node>
 ft::rbtree<T, Compare, Alloc, Node>::~rbtree()
 {
-	if (_root != _nil)
-		_clear(_root);
-	_alloc.destroy(_nil);
-	_alloc.deallocate(_nil, 1);
-}
-
-template <class T, class Compare, class Alloc, class Node>
-ft::rbtree<T, Compare, Alloc, Node> &ft::rbtree<T, Compare, Alloc, Node>::operator=(const rbtree &other)
-{
-	for (iterator it = other.begin(); it != other.end(); ++it)
-		insert(*it);
-	return *this;
+	if (_root != NULL)
+	{
+		if (_root != _nil)
+			_clear(_root);
+		_alloc.deallocate(_nil, 1);
+		_root = NULL;
+	}
 }
 
 template <class T, class Compare, class Alloc, class Node>
@@ -73,13 +61,13 @@ void ft::rbtree<T, Compare, Alloc, Node>::print_tree(void)
 }
 
 template <class T, class Compare, class Alloc, class Node>
-int	ft::rbtree<T, Compare, Alloc, Node>::size(void)
+int	ft::rbtree<T, Compare, Alloc, Node>::size(void) const
 {
 	return _getSize(_root);
 }
 
 template <class T, class Compare, class Alloc, class Node>
-typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::find(const value_type data)
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::find(const value_type data) const
 {
 	return (_find(_root, data));
 }
@@ -106,7 +94,19 @@ template <class T, class Compare, class Alloc, class Node>
 void ft::rbtree<T, Compare, Alloc, Node>::clear(void)
 {
 	_clear(_root);
-	_root= _nil;
+	_root = _nil;
+}
+
+template <class T, class Compare, class Alloc, class Node>
+bool ft::rbtree<T, Compare, Alloc, Node>::empty(void) const
+{
+	return (_root == _nil);
+}
+
+template <class T, class Compare, class Alloc, class Node>
+typename ft::rbtree<T, Compare, Alloc, Node>::size_type ft::rbtree<T, Compare, Alloc, Node>::max_size(void) const
+{
+	return (_alloc.max_size());
 }
 
 
@@ -220,6 +220,8 @@ void ft::rbtree<T, Compare, Alloc, Node>::_insert_tree_preorder_mode(pointer roo
 template <class T, class Compare, class Alloc, class Node>
 void ft::rbtree<T, Compare, Alloc, Node>::_erase(pointer node)
 {
+	std::cout << "erase" << std::endl;
+	std::cout << "node" << node << std::endl;
 	// successor == y
 	int original_color = node->_color;
 	pointer node_to_del = node;
@@ -494,7 +496,7 @@ void ft::rbtree<T, Compare, Alloc, Node>::_transplant(pointer node, pointer chil
 }
 
 template <class T, class Compare, class Alloc, class Node>
-typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::_find(pointer root, const value_type data)
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::_find(pointer root, const value_type data) const
 {
 	if (root == _nil)
 		return (NULL);
@@ -624,7 +626,7 @@ void ft::rbtree<T, Compare, Alloc, Node> ::_clear(pointer node)
 
 
 template <class T, class Compare, class Alloc, class Node>
-int ft::rbtree<T, Compare, Alloc, Node>::_getSize(pointer node)
+int ft::rbtree<T, Compare, Alloc, Node>::_getSize(pointer node) const
 {
 	if (node == _nil)
 		return 0;

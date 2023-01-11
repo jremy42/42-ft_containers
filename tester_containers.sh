@@ -57,6 +57,7 @@ function create_executable ()
 	mv std_containers $NAME
 	make fclean
 	clear
+	cp -r test/random_numbers.txt $NAME
 	LOAD_BAR+="#"
 }
 
@@ -76,6 +77,8 @@ function execute_test ()
 
 clear
 g++ -std=c++98 -o compares test/compare.cpp
+g++ -std=c++98 -o random test/random.cpp
+./random > test/random_numbers.txt
 echo "Building executable tests..."
 clear
 
@@ -112,4 +115,5 @@ done
 
 
 rm compares
+rm random
 #rm -rf .test_file

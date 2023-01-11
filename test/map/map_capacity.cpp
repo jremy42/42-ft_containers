@@ -36,24 +36,21 @@ int main()
 		return 0;
 	}
 	NAMESPACE::map<TEST_TYPE, TEST_TYPE> m;
-	std::vector<TEST_TYPE> v;
-	std::string buf;
-	//getline 
-	while(getline(f, buf, '\n'))
+	std::cout << m.empty() << std::endl;
+	std::cout << m.size() << std::endl;
+	std::cout << m.max_size() << std::endl;
+	for (int i = 0; i < 100; i++)
 	{
-		m.insert(NAMESPACE::make_pair(atoi(buf.c_str()), atoi(buf.c_str())));
-		v.push_back(atoi(buf.c_str()));
-
+		m.insert(NAMESPACE::make_pair(i, i));
 	}
-	for (std::vector<TEST_TYPE>::iterator it = v.begin(); it != v.end(); it++)
-	{
-		std::cout << m[*it] << std::endl;
-	}
+	std::cout << m.empty() << std::endl;
+	std::cout << m.size() << std::endl;
+	std::cout << m.max_size() << std::endl;
 
-		for (std::vector<TEST_TYPE>::iterator it = v.begin(); it != v.end(); it++)
-	{
-		std::cout << m.at(*it) << std::endl;
-	}
-
+	m.clear();
+	std::cout << m.empty() << std::endl;
+	std::cout << m.size() << std::endl;
+	std::cout << m.max_size() << std::endl;
+	
 	return 0;
 }

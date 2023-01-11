@@ -3,6 +3,10 @@
 # include <iostream>
 # include <vector>
 # include <stack>
+# include "map.hpp"
+# include <map>
+# include "pair.hpp"
+
 # ifndef NAMESPACE
 #  define NAMESPACE ft
 # endif
@@ -27,5 +31,23 @@ std::ostream &operator<<(std::ostream &os, const NAMESPACE::stack<T> &s)
 		os << tmp.top() << " ";
 		tmp.pop();
 	}
+	return os;
+}
+
+// surcharge operator<< pour afficher une pair
+template <typename T1, typename T2>
+std::ostream &operator<<(std::ostream &os, const std::pair<T1, T2> &p)
+{
+	os << "[" << p.first << "|" << p.second << "]" << std::endl;
+	return os;
+}
+
+
+template <typename T1, typename T2>
+std::ostream &operator<<(std::ostream &os, const NAMESPACE::map<T1, T2> &m)
+{
+	os << "size: " << m.size() << " content: ";
+	for (typename NAMESPACE::map<T1, T2>::const_iterator it = m.begin(); it != m.end(); it++)
+		os << it->first << ":" << it->second << " ";
 	return os;
 }

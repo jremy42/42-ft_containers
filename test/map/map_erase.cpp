@@ -28,32 +28,53 @@ public:
 
 int main()
 {
+	std::cout << "map erase test" << std::endl;
 	std::fstream f;
+	std::string buf;
 	f.open("random_numbers.txt", std::fstream::in);
 	if (!f.is_open())
 	{
 		std::cout << "file not open" << std::endl;
 		return 0;
 	}
-	NAMESPACE::map<TEST_TYPE, TEST_TYPE> m;
-	std::vector<TEST_TYPE> v;
-	std::string buf;
-	//getline 
-	while(getline(f, buf, '\n'))
+	NAMESPACE::map<int, int> m;
+	while (getline(f, buf, '\n'))
 	{
 		m.insert(NAMESPACE::make_pair(atoi(buf.c_str()), atoi(buf.c_str())));
-		v.push_back(atoi(buf.c_str()));
-
-	}
-	for (std::vector<TEST_TYPE>::iterator it = v.begin(); it != v.end(); it++)
-	{
-		std::cout << m[*it] << std::endl;
 	}
 
-		for (std::vector<TEST_TYPE>::iterator it = v.begin(); it != v.end(); it++)
+	NAMESPACE::map<int, int>m2(m);
+
+	//erase with key
+	NAMESPACE::map<int, int>::iterator it = m.begin();
+	for (int i = 0; i < 5; i++)
 	{
-		std::cout << m.at(*it) << std::endl;
+		it++;
 	}
+	m.erase(it->first);
+	std::cout << m << std::endl;
+	it++;
+	m.erase(it->first);
+
+	std::cout << m << std::endl;
+
+	NAMESPACE::map<int, int>::iterator it2 = m2.begin();
+	for (int i = 0; i < 5; i++)
+	{
+		it2++;
+	}
+	m2.erase(it2);
+	std::cout << m2 << std::endl;
+	it2 = m2.begin();
+	NAMESPACE::map<int, int>::iterator ite = m2.end();
+
+	m2.erase(it2, ite);
+	std::cout << m2 << std::endl;
+
+
+	//erase with iterator
+
+	
 
 	return 0;
 }

@@ -40,19 +40,21 @@ namespace ft
 		typedef Compare key_compare;
 		typedef ft::node_iterator<value_type> iterator;
 
-		public:
+		public: 
 			rbtree(void);
 			rbtree(const key_compare &comp = key_compare());
-			rbtree(const rbtree &other);
+			//rbtree(const rbtree &other);
 			~rbtree();	
-			rbtree &operator=(const rbtree &other);
+			//rbtree &operator=(const rbtree &other);
 			
 			//lookup
 			void print_tree(void);
-			int size(void);
-			pointer find(const value_type data);
+			int size(void) const;
+			pointer find(const value_type data) const;
 			bool is_valid_tree(void); // deprecated
 			bool check_black_balanced(pointer node);
+			bool empty(void) const;
+			size_type max_size(void) const;
 
 
 			// modifier
@@ -85,7 +87,7 @@ namespace ft
 			void _showTrunks(Trunk *p);
 			void _printTreeWithTrunks(pointer root, Trunk *prev, bool isLeft);
 			void _clear(pointer node);
-			pointer _find(pointer node, const value_type data);
+			pointer _find(pointer node, const value_type data) const;
 			void	_erase(pointer node);
 			pointer _findMin(pointer node) const;
 			pointer _findMax(pointer node) const;
@@ -94,7 +96,7 @@ namespace ft
 			int		_depthMin(pointer node, int depth);
 			int		_depthMax(pointer node, int depth);
 			int 	_depthBlack(pointer node);
-			int		_getSize(pointer node);
+			int		_getSize(pointer node) const;
 		
 
 

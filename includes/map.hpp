@@ -26,15 +26,13 @@ namespace ft{
 		typedef	value_type& reference;
 		typedef const value_type& const_reference;
 		typedef Compare key_compare;
-		//value_compare is a binary predicate that takes two element keys as arguments and returns a bool.
-		//typedef typename tree_type::key_compare value_compare;
 		typedef Allocator allocator_type;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef typename allocator_type::difference_type difference_type;
 		typedef typename allocator_type::size_type size_type;
 		typedef typename ft::node_iterator<value_type > iterator;
-		typedef typename ft::node_iterator<const value_type > const_iterator;
+		typedef typename ft::const_node_iterator<value_type > const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -99,8 +97,8 @@ namespace ft{
 		template <class InputIterator>
 		void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0);
 		void erase(iterator position);
-		size_type erase(const key_type& k);
 		void erase(iterator first, iterator last);
+		size_type erase(const key_type& k);
 		void swap(map& x);
 		void clear();
 
@@ -124,9 +122,6 @@ namespace ft{
 			tree_type _tree;
 			allocator_type _alloc;
 			key_compare _comp;
-			size_type _size;
-			ft::Node<value_type> *_root;
-			ft::Node<value_type> *_end;
 	};
 	//overload << map
 	
