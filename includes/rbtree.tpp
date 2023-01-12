@@ -155,6 +155,23 @@ bool ft::rbtree<T, Compare, Alloc, Node>::erase(const value_type data)
 }
 
 template <class T, class Compare, class Alloc, class Node>
+void ft::rbtree<T, Compare, Alloc, Node>::swap(rbtree &other)
+{
+	pointer tmp_root = _root;
+	pointer tmp_nil = _nil;
+	key_compare tmp_comp = _comp;
+	allocator_type tmp_alloc = _alloc;
+	_root = other._root;
+	_nil = other._nil;
+	_comp = other._comp;
+	_alloc = other._alloc;
+	other._root = tmp_root;
+	other._nil = tmp_nil;
+	other._comp = tmp_comp;
+	other._alloc = tmp_alloc;
+}
+
+template <class T, class Compare, class Alloc, class Node>
 typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::getRoot(void) const
 {
 	return _root;
@@ -176,6 +193,18 @@ template <class T, class Compare, class Alloc, class Node>
 typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::getMax(void) const
 {
 	return _findMax(_root);
+}
+
+template <class T, class Compare, class Alloc, class Node>
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::lower_bound(const value_type data) const
+{
+	return _lower_bound(_root, data);
+}
+
+template <class T, class Compare, class Alloc, class Node>
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::upper_bound(const value_type data) const
+{
+	return _upper_bound(_root, data);
 }
 
 /*private function*/
@@ -220,8 +249,6 @@ void ft::rbtree<T, Compare, Alloc, Node>::_insert_tree_preorder_mode(pointer roo
 template <class T, class Compare, class Alloc, class Node>
 void ft::rbtree<T, Compare, Alloc, Node>::_erase(pointer node)
 {
-	std::cout << "erase" << std::endl;
-	std::cout << "node" << node << std::endl;
 	// successor == y
 	int original_color = node->_color;
 	pointer node_to_del = node;
@@ -631,6 +658,40 @@ int ft::rbtree<T, Compare, Alloc, Node>::_getSize(pointer node) const
 	if (node == _nil)
 		return 0;
 	return _getSize(node->left) + _getSize(node->right) + 1;
+}
+
+template <class T, class Compare, class Alloc, class Node>
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::_lower_bound(pointer node, const value_type data) const
+{
+	if (node == _nil)
+		return (_nil);
+	if (_comp(node->data, data))
+		return (_lower_bound(node->right, data));
+	else
+	{
+		pointer tmp = _lower_bound(node->left, data);
+		if (tmp == _nil)
+			return (node);
+		else
+			return (tmp);
+	}
+}
+
+template <class T, class Compare, class Alloc, class Node>
+typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, Alloc, Node>::_upper_bound(pointer node, const value_type data) const
+{
+	if (node == _nil)
+		return (_nil);
+	if (_comp(data, node->data))
+		return (_upper_bound(node->left, data));
+	else
+	{
+		pointer tmp = _upper_bound(node->right, data);
+		if (tmp == _nil)
+			return (node);
+		else
+			return (tmp);
+	}
 }
 
 template <class T, class Compare, class Alloc, class Node>

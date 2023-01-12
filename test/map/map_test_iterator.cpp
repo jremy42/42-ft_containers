@@ -38,9 +38,9 @@ int main()
 	}
 	
 	for (int i = 0; i < 100; i++)
-	{
+	{		ite--;
+
 		std::cout << ite->first << std::endl;
-		ite--;
 	}
 
 	NAMESPACE::map<TEST_TYPE,TEST_TYPE>::reverse_iterator rit = m.rbegin();
@@ -52,9 +52,8 @@ int main()
 		rit++;
 	}
 	for (int i = 0; i < 100; i++)
-	{
+	{		rite--;
 		std::cout << rite->first << std::endl;
-		rite--;
 	}
 
 	//same with const iterator

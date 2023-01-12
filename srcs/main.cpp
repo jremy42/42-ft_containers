@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #ifndef NAMESPACE
 # define NAMESPACE ft
 #endif
@@ -28,49 +29,20 @@ public:
 
 int main()
 {
-	std::cout << "map erase test" << std::endl;
-	std::fstream f;
-	std::string buf;
-	f.open("random_numbers.txt", std::fstream::in);
-	if (!f.is_open())
+
+	NAMESPACE::map<TEST_TYPE, TEST_TYPE> m;
+
+	for (int i = 0; i < 15; i++)
 	{
-		std::cout << "file not open" << std::endl;
-		return 0;
+		m.insert(NAMESPACE::make_pair(i, i));
 	}
-	NAMESPACE::map<int, int> m;
-	while (getline(f, buf, '\n'))
+	NAMESPACE::pair<NAMESPACE::map<TEST_TYPE, TEST_TYPE>::iterator, NAMESPACE::map<TEST_TYPE, TEST_TYPE>::iterator> ret;
+	ret = m.equal_range(5);
+	while (ret.first != ret.second)
 	{
-		m.insert(NAMESPACE::make_pair(atoi(buf.c_str()), atoi(buf.c_str())));
+		std::cout << ret.first->first << " " << ret.first->second << std::endl;
+		ret.first++;
 	}
-
-	NAMESPACE::map<int, int>m2(m);
-
-	//erase with key
-	NAMESPACE::map<int, int>::iterator it = m.begin();
-	for (int i = 0; i < 5; i++)
-	{
-		it++;
-	}
-	m.erase(it->first);
-	std::cout << m << std::endl;
-	NAMESPACE::map<int, int>::iterator it2 = m2.begin();
-	for (int i = 0; i < 5; i++)
-	{
-		it2++;
-	}
-	m2.erase(it2);
-	std::cout << m2 << std::endl;
-	std::cout << "erase with iterator" << std::endl;
-	it2 = m2.begin();
-	NAMESPACE::map<int, int>::iterator ite = m2.end();
-	std::cout << "coucou" << std::endl;
-	m2.erase(m2.begin(), m2.end());
-	std::cout << m2 << std::endl;
-
-
-	//erase with iterator
-
-	
 
 	return 0;
 }

@@ -29,7 +29,8 @@ class node_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
 	public:
 		node_iterator(void) : _node(NULL), _nil(NULL), _root(NULL) {};
 
-		node_iterator(node_pointer node, node_pointer nil, node_pointer root) : _node(node), _nil(nil), _root(root) {};
+		node_iterator(node_pointer node, node_pointer nil, node_pointer root) : _node(node), _nil(nil), _root(root) {
+		};
 
 		node_iterator(const node_iterator &other) : _node(other._node), _nil(other._nil), _root(other._root) {};
 
@@ -50,7 +51,7 @@ class node_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
 		pointer operator->(void) { return &_node->data; };
 
 		self_type &operator++(void) {
-			std::cout << "operator++ start" << std::endl;
+	
 			if (_node == _nil)
 				_node = _min(_root);
 			else
@@ -61,18 +62,17 @@ class node_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
 						_node = _node->left;
 				}
 				else {
-					std::cout << "else" << std::endl;
 					node_pointer parent = _node->parent;
-					std::cout << "parent: " << parent->data << std::endl;
 					while (parent != _nil && _node == parent->right) {
 						_node = parent;
 						parent = parent->parent;
 					}
 					if (_node->right != parent)
 						_node = parent;
+					else
+						_node = _nil;
 				}
 			}
-			std::cout << "operator++ end" << std::endl;
 			return *this;
 		};
 
@@ -200,6 +200,8 @@ class node_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
 					}
 					if (_node->right != parent)
 						_node = parent;
+					else
+						_node = _nil;
 				}
 			}
 			return *this;

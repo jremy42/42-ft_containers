@@ -94,6 +94,7 @@ namespace ft{
 		//modifiers
 
 		ft::pair<iterator,bool> insert(const value_type& val);
+		iterator insert(iterator position, const value_type& val);
 		template <class InputIterator>
 		void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0);
 		void erase(iterator position);

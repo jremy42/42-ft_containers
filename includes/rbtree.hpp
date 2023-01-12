@@ -61,6 +61,7 @@ namespace ft
 			void clear(void);
 			pointer insert(const value_type data);
 			bool erase(const value_type data);
+			void swap(rbtree &other);
 
 			// get
 			pointer getRoot(void) const;
@@ -68,12 +69,16 @@ namespace ft
 			pointer getMin(void) const;
 			pointer getMax(void) const;
 
+			//lookup
+			pointer lower_bound(const value_type data) const;
+			pointer upper_bound(const value_type data) const;
+
 		private:
 			pointer _root;
 			pointer _nil;
 			allocator_type _alloc;
 			key_compare _comp;
-			size_type _size;
+			//size_type _size;
 
 			// insert functions
 			void _insert_tree_preorder_mode(pointer root, pointer node);
@@ -97,9 +102,8 @@ namespace ft
 			int		_depthMax(pointer node, int depth);
 			int 	_depthBlack(pointer node);
 			int		_getSize(pointer node) const;
-		
-
-
+			pointer _lower_bound(pointer node, const value_type data) const;
+			pointer _upper_bound(pointer node, const value_type data) const;
 	};
 
 

@@ -37,6 +37,7 @@ int main()
 		std::cout << "file not open" << std::endl;
 		return 0;
 	}
+	NAMESPACE::map<int, int> m0;
 	NAMESPACE::map<int, int> m;
 	m.insert(NAMESPACE::make_pair(1, 1));
 	m.insert(NAMESPACE::make_pair(2, 2));
@@ -51,7 +52,11 @@ int main()
 	while (getline(f, buf, '\n'))
 	{
 		m.insert(NAMESPACE::make_pair(atoi(buf.c_str()), atoi(buf.c_str())));
+		m0.insert(m0.begin(), NAMESPACE::make_pair(atoi(buf.c_str()), atoi(buf.c_str())));
+
 	}
+	std::cout << m << std::endl;
+	std::cout << m0 << std::endl;
 	NAMESPACE::map<TEST_TYPE, TEST_TYPE>::iterator it = m.begin();
 	NAMESPACE::map<TEST_TYPE, TEST_TYPE>::iterator ite = m.end();
 

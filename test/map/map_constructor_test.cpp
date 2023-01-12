@@ -53,7 +53,7 @@ int main()
 
 	NAMESPACE::map<TEST_TYPE, TEST_TYPE> m4(m3.begin(), m3.end());
 
-	std::cout << m4 << std::endl;
+	std::cout << "m4" << m4 << std::endl;
 
 	NAMESPACE::map<TEST_TYPE, TEST_TYPE>::iterator it = m3.begin();
 
@@ -62,7 +62,8 @@ int main()
 
 	NAMESPACE::map<TEST_TYPE, TEST_TYPE> m5(m3.begin(), it);
 
-	std::cout << m5 << std::endl;
+	std::cout << "m5:" << m5 << std::endl;
+
 	NAMESPACE::map<TEST_TYPE, TEST_TYPE>::const_iterator it2 = m.begin();
 	std::cout << *it2 << std::endl;
 	NAMESPACE::map<TEST_TYPE, TEST_TYPE>::const_iterator it3;
@@ -73,6 +74,6 @@ int main()
 	std::cout << m6 << std::endl;
 	NAMESPACE::map<TEST_TYPE, TEST_TYPE> m7;
 	m7 = m6;
-	std::cout << m7 << std::endl;
+	std::cout << m7 << std::endl; 
 	return 0;
 }

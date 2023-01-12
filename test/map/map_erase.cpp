@@ -52,11 +52,7 @@ int main()
 		it++;
 	}
 	m.erase(it->first);
-	std::cout << m << std::endl;
-	it++;
-	m.erase(it->first);
-
-	std::cout << m << std::endl;
+	std::cout <<__LINE__ << m << std::endl;
 
 	NAMESPACE::map<int, int>::iterator it2 = m2.begin();
 	for (int i = 0; i < 5; i++)
@@ -65,16 +61,16 @@ int main()
 	}
 	m2.erase(it2);
 	std::cout << m2 << std::endl;
+	std::cout << "erase with iterator" << std::endl;
 	it2 = m2.begin();
-	NAMESPACE::map<int, int>::iterator ite = m2.end();
-
-	m2.erase(it2, ite);
+	//NAMESPACE::map<int, int>::iterator ite = m2.end();
+	m2.erase(m2.begin(), m2.end());
 	std::cout << m2 << std::endl;
-
-
-	//erase with iterator
-
 	
+	NAMESPACE::map<int, int>::iterator it4 = m.begin();
+	NAMESPACE::map<int, int>::iterator ite4 = m.end();
+	it4++;
+	m.erase(it4, ite4);
+	std::cout << m << std::endl;
 
-	return 0;
 }
