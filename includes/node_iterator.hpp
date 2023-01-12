@@ -101,7 +101,11 @@ class node_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
 						_node = parent;
 						parent = parent->parent;
 					}
-					_node = parent;
+					if (_node->left != parent
+						&& _node->right != parent)
+						_node = parent;
+					else
+						_node = _nil;
 				}
 			}
 			return *this;

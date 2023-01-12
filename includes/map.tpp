@@ -50,6 +50,9 @@ ft::map<Key, T, Compare, Alloc>::~map()
 template <class Key, class T, class Compare, class Alloc>
 ft::map<Key, T, Compare, Alloc>& ft::map<Key, T, Compare, Alloc>::operator=(const map& x)
 {
+	if (this == &x)
+		return *this;
+	_tree.clear();
 	for (const_iterator it = x.begin(); it != x.end(); ++it)
 		_tree.insert(*it);
 	return *this;
@@ -71,17 +74,21 @@ template <class Key, class T, class Compare, class Alloc>
 typename ft::map<Key, T, Compare, Alloc>::mapped_type& ft::map<Key, T, Compare, Alloc>::operator[](const key_type& k)
 {
 	//std::cout << "operator[] called" << std::endl;
-	iterator it = iterator(find(k));
-	if (it == end())
-		it = insert(ft::make_pair(k, mapped_type())).first;
+	iterator it;
+	if (count(k))
+		it = find(k);
+	else
+		it = insert(value_type(k, mapped_type())).first;
 	return it->second;
 }
 
 template <class Key, class T, class Compare, class Alloc>
 typename ft::map<Key, T, Compare, Alloc>::mapped_type& ft::map<Key, T, Compare, Alloc>::at(const key_type& k)
 {
-	iterator it = iterator(find(k));
-	if (it == end())
+	iterator it;
+	if (count(k))
+		it = find(k);
+	else
 		throw std::out_of_range("map::at");
 	return it->second;
 }
@@ -89,8 +96,10 @@ typename ft::map<Key, T, Compare, Alloc>::mapped_type& ft::map<Key, T, Compare, 
 template <class Key, class T, class Compare, class Alloc>
 const typename ft::map<Key, T, Compare, Alloc>::mapped_type& ft::map<Key, T, Compare, Alloc>::at(const key_type& k) const
 {
-	const_iterator it = const_iterator(find(k));
-	if (it == end())
+	const_iterator it;
+	if (count(k))
+		it = find(k);
+	else
 		throw std::out_of_range("map::at");
 	return it->second;
 }
