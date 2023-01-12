@@ -18,6 +18,39 @@
 # define TEST_TYPE int
 #endif
 
+class A
+{
+public:
+	A() {}
+	~A() {}
+	A(A const &a) { (void)a; }
+	A &operator=(A const &a) { (void)a; return *this; }
+    friend std::ostream &operator<<(std::ostream &out, A const &a)
+    {
+        (void)a;
+        out << "A";
+        return out;
+    }
+    friend bool operator==(A const &a, A const &b)
+    {
+        (void)a;
+        (void)b;
+        return true;
+    }
+    friend bool operator!=(A const &a, A const &b)
+    {
+        (void)a;
+        (void)b;
+        return false;
+    }
+    friend bool operator<(A const &a, A const &b)
+    {
+        (void)a;
+        (void)b;
+        return false;
+    }
+};
+
 int		main(void)
 {
 	std::list<NAMESPACE::pair<TEST_TYPE, TEST_TYPE> > lst;
@@ -58,5 +91,14 @@ int		main(void)
     std::cout << mp_range << std::endl;
     std::cout << "mp_copy:" << std::endl;
     std::cout << mp_copy << std::endl;
+
+    NAMESPACE::map<TEST_TYPE, A> m_a;
+
+    A a1;
+    A a2;
+
+    m_a[1] = a1;
+    m_a[2] = a2;
+
 	return (0);
 }

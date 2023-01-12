@@ -227,7 +227,13 @@ void ft::map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
 template <class Key, class T, class Compare, class Alloc>
 typename ft::map<Key, T, Compare, Alloc>::size_type ft::map<Key, T, Compare, Alloc>::erase(const key_type& k)
 {
-	return _tree.erase(ft::make_pair(k, mapped_type()));
+	if (_tree.find(ft::make_pair(k, mapped_type())))
+	{
+		_tree.erase(ft::make_pair(k, mapped_type()));
+		return 1;
+	}
+	else
+		return 0;
 }
 
 template <class Key, class T, class Compare, class Alloc>
@@ -266,13 +272,19 @@ typename ft::map<Key, T, Compare, Alloc>::size_type ft::map<Key, T, Compare, All
 template <class Key, class T, class Compare, class Alloc>
 typename ft::map<Key, T, Compare, Alloc>::iterator ft::map<Key, T, Compare, Alloc>::find(const key_type& k)
 {
-	return iterator(_tree.find(ft::make_pair(k, mapped_type())), _tree.getNil(), _tree.getRoot());
+	if (_tree.find(ft::make_pair(k, mapped_type())))
+		return iterator(_tree.find(ft::make_pair(k, mapped_type())), _tree.getNil(), _tree.getRoot());
+	else
+		return end();
 }
 
 template <class Key, class T, class Compare, class Alloc>
 typename ft::map<Key, T, Compare, Alloc>::const_iterator ft::map<Key, T, Compare, Alloc>::find(const key_type& k) const
 {
-	return const_iterator(_tree.find(ft::make_pair(k, mapped_type())), _tree.getNil(), _tree.getRoot());
+if (_tree.find(ft::make_pair(k, mapped_type())))
+		return iterator(_tree.find(ft::make_pair(k, mapped_type())), _tree.getNil(), _tree.getRoot());
+	else
+		return end();
 }
 
 template <class Key, class T, class Compare, class Alloc>

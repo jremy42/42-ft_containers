@@ -8,62 +8,69 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <list>
 
 #ifndef NAMESPACE
 # define NAMESPACE ft
 #endif
 
-#define T1 int
-#define T2 std::string
-typedef NAMESPACE::pair<const T1, T2> T3;
+#ifndef TEST_TYPE
+# define TEST_TYPE int
+#endif
 
-static int iter = 0;
-
-template <typename MAP, typename U>
-void	ft_erase(MAP &mp, U param)
+class A
 {
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.erase(param);
-	std::cout << mp << std::endl;
-}
+public:
+	A() {}
+	~A() {}
+	A(A const &a) { (void)a; }
+	A &operator=(A const &a) { (void)a; return *this; }
+};
 
-template <typename MAP, typename U, typename V>
-void	ft_erase(MAP &mp, U param, V param2)
+int main()
 {
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.erase(param, param2);
-	std::cout << mp << std::endl;
-}
+	std::cout << "map erase test" << std::endl;
+	std::fstream f;
+	std::string buf;
+	f.open("random_numbers.txt", std::fstream::in);
+	if (!f.is_open())
+	{
+		std::cout << "file not open" << std::endl;
+		return 0;
+	}
+	NAMESPACE::map<int, int> m;
+	while (getline(f, buf, '\n'))
+	{
+		m.insert(NAMESPACE::make_pair(atoi(buf.c_str()), atoi(buf.c_str())));
+	}
 
-int		main(void)
-{
-	std::list<T3> lst;
-	unsigned int lst_size = 10;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
-	NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
-	std::cout << mp << std::endl;
+	NAMESPACE::map<int, int>m2(m);
 
-	ft_erase(mp, ++mp.begin());
+	//erase with key
+	NAMESPACE::map<int, int>::iterator it = m.begin();
+	for (int i = 0; i < 5; i++)
+	{
+		it++;
+	}
+	m.erase(it->first);
+	std::cout <<__LINE__ << m << std::endl;
 
-	ft_erase(mp, mp.begin());
-	ft_erase(mp, --mp.end());
+	NAMESPACE::map<int, int>::iterator it2 = m2.begin();
+	for (int i = 0; i < 5; i++)
+	{
+		it2++;
+	}
+	m2.erase(it2);
+	std::cout << m2 << std::endl;
+	std::cout << "erase with iterator" << std::endl;
+	it2 = m2.begin();
+	//NAMESPACE::map<int, int>::iterator ite = m2.end();
+	m2.erase(m2.begin(), m2.end());
+	std::cout << m2 << std::endl;
+	
+	NAMESPACE::map<int, int>::iterator it4 = m.begin();
+	NAMESPACE::map<int, int>::iterator ite4 = m.end();
+	it4++;
+	m.erase(it4, ite4);
+	std::cout << m << std::endl;
 
-	ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
-	ft_erase(mp, --(--(--mp.end())), --mp.end());
-
-	mp[10] = "Hello";
-	mp[11] = "Hi there";
-	std::cout << mp << std::endl;
-	ft_erase(mp, --(--(--mp.end())), mp.end());
-
-	mp[12] = "ONE";
-	mp[13] = "TWO";
-	mp[14] = "THREE";
-	mp[15] = "FOUR";
-	std::cout << mp << std::endl;
-	ft_erase(mp, mp.begin(), mp.end());
-
-	return (0);
 }
