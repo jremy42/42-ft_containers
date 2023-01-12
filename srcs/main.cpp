@@ -1,23 +1,9 @@
 #include "vector.hpp"
 #include <iostream>
 #include <vector>
-#include "map.hpp"
-#include <map>
-#include "utils.hpp"
-#include <fstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
 #ifndef NAMESPACE
 # define NAMESPACE ft
 #endif
-
-#ifndef TEST_TYPE
-# define TEST_TYPE int
-#endif
-
 class A
 {
 public:
@@ -29,20 +15,34 @@ public:
 
 int main()
 {
-
-	NAMESPACE::map<TEST_TYPE, TEST_TYPE> m;
-
-	for (int i = 0; i < 15; i++)
-	{
-		m.insert(NAMESPACE::make_pair(i, i));
-	}
-	NAMESPACE::pair<NAMESPACE::map<TEST_TYPE, TEST_TYPE>::iterator, NAMESPACE::map<TEST_TYPE, TEST_TYPE>::iterator> ret;
-	ret = m.equal_range(5);
-	while (ret.first != ret.second)
-	{
-		std::cout << ret.first->first << " " << ret.first->second << std::endl;
-		ret.first++;
-	}
-
+	std::cout << "vector size test" << std::endl;
+	NAMESPACE::vector<int> v;
+	std::cout << v.size() << std::endl;
+	v.push_back(1);
+	std::cout << v.size() << std::endl;
+	v.push_back(2);
+	std::cout << v.size() << std::endl;
+	v.push_back(3);
+	std::cout << v.size() << std::endl;
+	v.pop_back();
+	std::cout << v.size() << std::endl;
+	v.pop_back();
+	std::cout << v.size() << std::endl;
+	v.pop_back();
+	std::cout << v.size() << std::endl;
+	//v.pop_back();
+	//std::cout << v.size() << std::endl;
+	NAMESPACE::vector<A> v2;
+	std::cout << v2.size() << std::endl;
+	v2.push_back(A());
+	std::cout << v2.size() << std::endl;
+	v2.push_back(A());
+	std::cout << v2.size() << std::endl;
+	v2.pop_back();
+	std::cout << v2.size() << std::endl;
+	v2.pop_back();
+	std::cout << v2.size() << std::endl;
+	//v2.pop_back();
+	//std::cout << v2.size() << std::endl;
 	return 0;
 }

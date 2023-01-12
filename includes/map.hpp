@@ -113,6 +113,7 @@ namespace ft{
 		const_iterator lower_bound(const key_type& k) const;
 		iterator upper_bound(const key_type& k);
 		const_iterator upper_bound(const key_type& k) const;
+
 		// observers
 		key_compare key_comp() const;
 		value_compare value_comp() const;
@@ -124,8 +125,29 @@ namespace ft{
 			allocator_type _alloc;
 			key_compare _comp;
 	};
-	//overload << map
+	//overload operators
+	template <class Key, class T, class Compare, class Allocator>
+	bool operator==(const map<Key,T,Compare,Allocator>& lhs, const map<Key,T,Compare,Allocator>& rhs);
 	
+	template <class Key, class T, class Compare, class Allocator>
+	bool operator!=(const map<Key,T,Compare,Allocator>& lhs, const map<Key,T,Compare,Allocator>& rhs);
+	
+	template <class Key, class T, class Compare, class Allocator>
+	bool operator<(const map<Key,T,Compare,Allocator>& lhs, const map<Key,T,Compare,Allocator>& rhs);
+	
+	template <class Key, class T, class Compare, class Allocator>
+	bool operator<=(const map<Key,T,Compare,Allocator>& lhs, const map<Key,T,Compare,Allocator>& rhs);
+	
+	template <class Key, class T, class Compare, class Allocator>
+	bool operator>(const map<Key,T,Compare,Allocator>& lhs, const map<Key,T,Compare,Allocator>& rhs);
+	
+	template <class Key, class T, class Compare, class Allocator>
+	bool operator>=(const map<Key,T,Compare,Allocator>& lhs, const map<Key,T,Compare,Allocator>& rhs);
+	
+	template <class Key, class T, class Compare, class Allocator>
+	void swap(map<Key,T,Compare,Allocator>& x, map<Key,T,Compare,Allocator>& y);
+
 	#include "map.tpp"
 };
+
 #endif
