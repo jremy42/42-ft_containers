@@ -25,8 +25,6 @@ int main()
 	//change with iterator
 	NAMESPACE::vector<int>::iterator it = v.begin();
 	NAMESPACE::vector<int>::iterator ite = v.end();
-	it = ite;
-	std::cout << "it = ite" << (*it) << std::endl;
 	it = v.begin();
 	std::cout << "it = v.begin() " << (*it) << std::endl;
 	ite = it;
@@ -34,13 +32,13 @@ int main()
 	NAMESPACE::vector<int>::const_iterator cit = v.begin();
 	NAMESPACE::vector<int>::const_iterator cite = v.end();
 	const NAMESPACE::vector<int>::iterator it2 = v.begin();
-	const NAMESPACE::vector<int>::iterator ite2 = v.end();
 	cit = it;
 	std::cout << "cit = it " << (*cit) << std::endl;
 	cit = it2;
 	std::cout << "cit = it2 " << (*cit) << std::endl;
+	cite--;
 	std::cout << "cite:" << *cite << std::endl;
-	std::cout << "ite2:" << *ite2 << std::endl;
+
     return 0;
 
     return 0;

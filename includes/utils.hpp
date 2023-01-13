@@ -6,6 +6,7 @@
 # include "map.hpp"
 # include <map>
 # include "pair.hpp"
+# include "set.hpp"
 
 # ifndef NAMESPACE
 #  define NAMESPACE ft
@@ -49,5 +50,15 @@ std::ostream &operator<<(std::ostream &os, const NAMESPACE::map<T1, T2> &m)
 	os << "size: " << m.size() << " content: ";
 	for (typename NAMESPACE::map<T1, T2>::const_iterator it = m.begin(); it != m.end(); it++)
 		os << it->first << ":" << it->second << " ";
+	return os;
+}
+
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const NAMESPACE::set<T> &s)
+{
+	os << "size: " << s.size() << " content: ";
+	for (typename NAMESPACE::set<T>::const_iterator it = m.begin(); it != m.end(); it++)
+		os << *it << " ";
 	return os;
 }

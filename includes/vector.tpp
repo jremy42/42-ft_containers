@@ -337,10 +337,10 @@ ft::vector<T, Alloc>::push_back(const value_type& val)
 {
 	if(_size == _capacity)
 	{
-		if (_capacity == 0)
+		if (_size == 0)
 			reserve(1);
 		else
-			reserve(_capacity * 2);
+			reserve(_size * 2);
 	}
 	_allocator.construct(&_data[_size], val);
 	_size++;
@@ -378,10 +378,10 @@ ft::vector<T, Alloc>::insert(iterator position, size_type n, const value_type& v
 	if (n == 0)
 		return;
 	if (_size + n <= _capacity);
-	else if (n + _size > _capacity * 2)
+	else if (n + _size > _size * 2)
 		reserve((n + _size));
 	else
-		reserve(_capacity * 2);
+		reserve(_size * 2);
 	for (difference_type i = 1; i <= position_end; i++) {
 		_allocator.construct(&_data[begin_end + n - i], _data[begin_end - i]);
 		_allocator.destroy(&_data[begin_end - i]);
@@ -413,10 +413,10 @@ ft::vector<T, Alloc>::insert_range(iterator position, InputIterator first, Input
 	if (n == 0)
 		return;
 	if (_size + n <= _capacity);
-	else if (n + _size > _capacity * 2)
+	else if (n + _size > _size * 2)
 		reserve((n + _size));
 	else
-		reserve(_capacity * 2);
+		reserve(_size * 2);
 	for (difference_type i = 1; i <= position_end; i++) {
 		_allocator.construct(&_data[begin_end + n - i], _data[begin_end - i]);
 		_allocator.destroy(&_data[begin_end - i]);

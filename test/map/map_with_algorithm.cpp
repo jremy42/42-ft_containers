@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <algorithm>
+#include "node_iterator.hpp"
 
 #ifndef NAMESPACE
 # define NAMESPACE ft
@@ -26,31 +28,28 @@ public:
 	A &operator=(A const &a) { (void)a; return *this; }
 };
 
+void print(const NAMESPACE::pair<int, int> &p)
+{
+	std::cout << p << std::endl;
+}
+
 int main()
 {
+	std::cout << "map algo test" << std::endl;
 	std::fstream f;
+	std::string buf;
 	f.open("random_numbers.txt", std::fstream::in);
 	if (!f.is_open())
 	{
 		std::cout << "file not open" << std::endl;
 		return 0;
 	}
-	NAMESPACE::map<TEST_TYPE, TEST_TYPE> m;
-	std::cout << m.empty() << std::endl;
-	std::cout << m.size() << std::endl;
-	std::cout << m.max_size() << std::endl;
-	for (int i = 0; i < 100; i++)
-	{
-		m.insert(NAMESPACE::make_pair(i, i));
-	}
-	std::cout << m.empty() << std::endl;
-	std::cout << m.size() << std::endl;
-	std::cout << m.max_size() << std::endl;
+	NAMESPACE::map<int, int> m;
 
-	m.clear();
-	std::cout << m.empty() << std::endl;
-	std::cout << m.size() << std::endl;
-	std::cout << m.max_size() << std::endl;
-	
+
+	while (getline(f, buf, '\n'))
+		m.insert(NAMESPACE::make_pair(atoi(buf.c_str()), atoi(buf.c_str())));
+
+	std::for_each(m.begin(), m.end(), print);
 	return 0;
 }

@@ -517,9 +517,10 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 {
 	if (root == _nil)
 		return (NULL);
-	if (root->data.first == data.first)
+	//use comp
+	if (!_comp(data, root->data) && !_comp(root->data, data))
 		return (root);
-	if (data < root->data)
+	if (_comp(data, root->data))
 		return (_find(root->left, data));
 	else
 		return (_find(root->right, data));

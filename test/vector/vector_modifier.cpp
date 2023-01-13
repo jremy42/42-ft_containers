@@ -12,8 +12,8 @@
 class A
 {
 public:
-	A() { _a = new int;}
-	~A() {delete _a;}
+	A() {}
+	~A() {}
 	A(A const &a) { (void)a; }
 	A &operator=(A const &a) { (void)a; return *this; }
     friend std::ostream &operator<<(std::ostream &out, A const &a)
@@ -22,8 +22,6 @@ public:
         out << "A";
         return out;
     }
-	private:
-		int* _a;
 };
 
 int main()

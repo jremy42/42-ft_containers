@@ -145,14 +145,16 @@ int main()
     std::cout << "it3++" << *(it3++) << std::endl;
     std::cout << "it3--" << *(it3--) << std::endl;
     std::cout << "it3" << *(it3) << std::endl;
+	std::cout << "++it3" << *(++it3) << std::endl;
+	std::cout << "--it3" << *(--ite3) << std::endl;
+	std::cout << "it3" << *(it3) << std::endl;
+	std::cout << "it3 - 1" << *(ite3 - 1) << std::endl;
     std::cout << "it3 + 1" << *(it3 + 1) << std::endl;
-    std::cout << "it3 - 1" << *(it3 - 1) << std::endl;
     std::cout << "it3 += 1" << *(it3 += 1) << std::endl;
-    std::cout << "it3 -= 1" << *(it3 -= 1) << std::endl;
-	std::cout << " 1 + it3" << *(1 + it3) << std::endl;
-    std::cout << "it3[1]" << (it3[1]) << std::endl;
-    std::cout << "it3[1] = 1" << (it3[1] = 1) << std::endl;
-    std::cout << "it3[1]" << (it3[1]) << std::endl;
+    std::cout << "it3 -= 1" << *(ite3 -= 1) << std::endl;
+    std::cout << "it3[1]" << (it3[0]) << std::endl;
+    std::cout << "it3[1] = 1" << (it3[0] = "1") << std::endl;
+    std::cout << "it3[1]" << (it3[0]) << std::endl;
 
 	// test const_iterator assign iterator
 	cit3 = it3;

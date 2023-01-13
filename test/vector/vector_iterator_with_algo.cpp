@@ -28,15 +28,15 @@ int main()
     // test algo
     std::cout << "test algo" << std::endl;
     std::cout << *(std::find(v.begin(), v.end(), 3)) << std::endl;
-    std::cout << *(std::find(v.begin(), v.end(), 5)) << std::endl;
     std::cout << *(std::find(v.begin(), v.end(), 1)) << std::endl;
     std::cout << *(std::find(v.begin(), v.end(), 4)) << std::endl;
     std::cout << *(std::find(v.begin(), v.end(), 2)) << std::endl;
 
+	std::cout << "test find false" << std::endl;
+	std::cout << ((std::find(v.begin(), v.end(), 5)) == v.end()) << std::endl;
 	// test algo with reverse iterator
 	std::cout << "test algo with reverse iterator" << std::endl;
 	std::cout << *(std::find(v.rbegin(), v.rend(), 3)) << std::endl;
-	std::cout << *(std::find(v.rbegin(), v.rend(), 5)) << std::endl;
 	std::cout << *(std::find(v.rbegin(), v.rend(), 1)) << std::endl;
 	std::cout << *(std::find(v.rbegin(), v.rend(), 4)) << std::endl;
 	std::cout << *(std::find(v.rbegin(), v.rend(), 2)) << std::endl;

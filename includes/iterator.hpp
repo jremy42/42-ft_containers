@@ -134,7 +134,7 @@ namespace ft {
 				return *this;
 			}
 
-			reference operator[](difference_type n) const { return _current[n]; }
+			reference operator[](difference_type n) const { return *(*this + n); }
 	
 			template <class U>
 			random_access_iterator &operator=(const ft::random_access_iterator<U> &other) {

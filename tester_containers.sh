@@ -9,7 +9,7 @@ RST="\033[0m"
 LOAD_BAR=""
 
 TEST_NUMBER="0"
-VALGRIND="valgrind"
+VALGRIND="valgrind  --leak-check=full --track-fds=yes --show-leak-kinds=all --exit-on-first-error=yes --error-exitcode=2 "
 PRINT_CONTAINER_TYPE=""
 
 function runing_tests()
@@ -75,6 +75,22 @@ function execute_test ()
 
 }
 
+function check_leak()
+{
+	TMP=$(echo $1 | cut -c 5- | rev | cut -c 5- | rev)
+	EXEC_DIR=$(echo ".test_file"$TMP)
+	NAME=$(echo $EXEC_DIR | rev | cut -d '/' -f 1 | rev)
+	echo "$TEST_NUMBER TESTING:$NAME"
+	$VALGRIND ./$EXEC_DIR/ft_containers 1> /dev/null 2>valgrind.err
+	if [ $? -ne 0 ]
+	then
+		echo -e "${RED}LEAKS${RST}"
+		cat valgrind.err
+		exit 1
+	fi
+	echo -e "${GREEN}NO LEAKS${RST}"
+}
+
 clear
 g++ -std=c++98 -o compares test/compare.cpp
 g++ -std=c++98 -o random test/random.cpp
@@ -112,6 +128,18 @@ do
 	fi
 	execute_test "$i"
 done
+
+for i in $TEST_FILES
+do
+	TMP=$(echo $i  | cut -c 6- | cut -d '/' -f 1 | tr '[:lower:]' '[:upper:]')
+	if [ "$TMP" != "$PRINT_CONTAINER_TYPE" ]
+	then
+		echo -e "${BLU}####[$TMP]####${RST}"
+		PRINT_CONTAINER_TYPE=$TMP
+	fi
+	check_leak "$i"
+done
+
 
 
 rm compares
