@@ -119,7 +119,7 @@ namespace ft{
 		value_compare value_comp() const;
 
 		// print
-		void print(void);
+		//void print(void);
 		private :
 			tree_type _tree;
 			allocator_type _alloc;

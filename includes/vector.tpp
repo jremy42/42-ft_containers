@@ -41,7 +41,6 @@ ft::vector<T, Alloc>::vector(const vector& lhs)
 	*this = lhs;
 }
 
-// surcharge operator=
 template <class T, class Alloc>
 ft::vector<T, Alloc>&
 ft::vector<T, Alloc>::operator=(const vector& lhs)
@@ -61,7 +60,6 @@ ft::vector<T, Alloc>::operator=(const vector& lhs)
 	return *this;
 }
 
-// to do 2 other constructors
 
 
 /* ********************************************
@@ -290,7 +288,6 @@ ft::vector<T, Alloc>::back(void) const
  * 		Modifiers
  ******************************************** */
 
-// Assign with check if iterator tag is random access
 template <class T, class Alloc>
 template <class InputIterator>
 void
@@ -358,7 +355,6 @@ ft::vector<T, Alloc>::pop_back(void)
 	}
 }
 
-// insert
 template <class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator
 ft::vector<T, Alloc>::insert(iterator position, const value_type& val)
@@ -507,7 +503,6 @@ ft::vector<T, Alloc>::clear(void)
 	_size = 0;
 }
 
-// allocator
 template <class T, class Alloc>
 typename ft::vector<T, Alloc>::allocator_type
 ft::vector<T, Alloc>::get_allocator(void) const
@@ -568,14 +563,6 @@ void
 swap(ft::vector<T, Alloc>& x, ft::vector<T, Alloc>& y)
 {
 	x.swap(y);
-}
-
-
-template <class T, class Alloc>
-std::string
-ft::vector<T, Alloc>::leon(void) const
-{
-	return std::string("0ZZZZZRRA§AAAAAAAAAAAAAAAAAAAAiiiiiiiiiiivf cggfffjufccccccccbujvcjjjjjjjjjjjjjj  ttttttttttttttttttt cegxxffffxxxxxgggggggggg cvtrrrrrnhhhhnhffffffffffffffffffffffffffffhnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn                          cgggggggggggggg~~~~~~~~~~~~~~~~~~~            zzzz§§§§§§§§00000000000000000000000\n00000000000000000000000000000000000000000000000000xxxxxxxxx≈≈≈xxxxxdd");
 }
 
 #endif

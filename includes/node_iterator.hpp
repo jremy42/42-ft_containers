@@ -119,7 +119,6 @@ class node_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
 		friend bool operator==(const node_iterator &lhs, const node_iterator &rhs) { return lhs._node == rhs._node; };
 		friend bool operator!=(const node_iterator &lhs, const node_iterator &rhs) { return lhs._node != rhs._node; };
 
-		//get for _nil _root _node
 		node_pointer get_node(void) const { return _node; };
 		node_pointer get_nil(void) const { return _nil; };
 		node_pointer get_root(void) const { return _root; }; 
@@ -164,13 +163,14 @@ class node_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
 			node_pointer _root;
 		
 		public:
-		//same as node_iterator
 			const_node_iterator(void) : _node(NULL), _nil(NULL), _root(NULL) {};
 			const_node_iterator(node_pointer node,node_pointer nil,node_pointer root) : _node(node), _nil(nil), _root(root) {};
 			const_node_iterator(const const_node_iterator &other) : _node(other._node), _nil(other._nil), _root(other._root) {};
 			const_node_iterator (const node_iterator<T> &other) : _node(other.get_node()), _nil(other.get_nil()), _root(other.get_root()) {};
 			~const_node_iterator() {};
-			operator const_node_iterator<T>() const { return const_node_iterator<T>(_node, _nil, _root); };
+			//operator const_node_iterator<T>() const { return const_node_iterator<T>(_node, _nil, _root); };
+			operator const_node_iterator<T>() const { return node_iterator<T>(_node, _nil, _root); };
+
 
 			template <class U>
 			const_node_iterator(const const_node_iterator<U> &other) : _node(other._node), _nil(other._nil), _root(other._root) {};
@@ -264,9 +264,5 @@ class node_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
 				return _root;
 			}
 
-
-
-	};
-	
-		
+	};	
 };

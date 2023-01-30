@@ -32,12 +32,12 @@ namespace ft{
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef typename allocator_type::difference_type difference_type;
 		typedef typename allocator_type::size_type size_type;
-		typedef typename ft::node_iterator<value_type > iterator;
-		typedef typename ft::const_node_iterator<value_type > const_iterator;
+		typedef typename ft::node_iterator<const value_type > iterator;
+		typedef typename ft::node_iterator<const value_type > const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
-		typedef ft::rbtree<value_type, value_compare, std::allocator<ft::Node<value_type> > > tree_type;
+		typedef ft::rbtree<const value_type, value_compare, std::allocator<ft::Node<const value_type> > > tree_type;
 
 
 		// Constructors
@@ -51,10 +51,6 @@ namespace ft{
 		set& operator=(const set& x);
 		// get allocator
 		allocator_type get_allocator() const;
-		// element access
-		mapped_type& operator[](const key_type& k);
-		mapped_type& at(const key_type& k);
-		const mapped_type& at(const key_type& k) const;
 
 		//iterators
 		iterator begin();
@@ -99,7 +95,7 @@ namespace ft{
 		value_compare value_comp() const;
 
 		// print
-		void print(void);
+		//void print(void);
 		private :
 			tree_type _tree;
 			allocator_type _alloc;

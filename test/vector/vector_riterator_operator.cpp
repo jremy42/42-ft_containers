@@ -49,5 +49,21 @@ int main()
     std::cout << "crit > crite: " << (crit > crite) << std::endl;
     std::cout << "crit >= crite: " << (crit >= crite) << std::endl;
 
+	// test const & non const
+	std::cout << "crit == rit: " << (crit == rit) << std::endl;
+	std::cout << "crit != rit: " << (crit != rit) << std::endl;
+	std::cout << "crit < rit: " << (crit < rit) << std::endl;
+	std::cout << "crit <= rit: " << (crit <= rit) << std::endl;
+	std::cout << "crit > rit: " << (crit > rit) << std::endl;
+	std::cout << "crit >= rit: " << (crit >= rit) << std::endl;
+
+	std::cout << "rit == crit: " << (rit == crit) << std::endl;
+	std::cout << "rit != crit: " << (rit != crit) << std::endl;
+	std::cout << "rit < crit: " << (rit < crit) << std::endl;
+	std::cout << "rit <= crit: " << (rit <= crit) << std::endl;
+	std::cout << "rit > crit: " << (rit > crit) << std::endl;
+	std::cout << "rit >= crit: " << (rit >= crit) << std::endl;
+	
+
     return 0;
 }

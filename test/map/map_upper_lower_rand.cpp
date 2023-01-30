@@ -58,7 +58,6 @@ int main()
 	std::cout << "upper bound 1 " << m.upper_bound(1)->first << std::endl;
 	std::cout << "lower bound 14 " << m.lower_bound(14)->first << std::endl;
 	std::cout << "lower bound 0 " << m.lower_bound(0)->first << std::endl;
-	std::cout << "upper bound 14 " << m.upper_bound(14)->first << std::endl;
 
 	ret = m.equal_range(5);
 	std::cout <<  "ret first " << ret.first->first << std::endl;

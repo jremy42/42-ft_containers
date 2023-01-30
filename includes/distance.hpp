@@ -15,4 +15,4 @@ namespace ft {
 		return n;
 	}
 
-} // namespace ft
+} 

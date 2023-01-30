@@ -7,12 +7,12 @@
 # include <map>
 # include "pair.hpp"
 # include "set.hpp"
+# include <set>
 
 # ifndef NAMESPACE
 #  define NAMESPACE ft
 # endif
 
-// surcharge operator<< pour afficher un vector
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const NAMESPACE::vector<T> &v)
 {
@@ -21,7 +21,6 @@ std::ostream &operator<<(std::ostream &os, const NAMESPACE::vector<T> &v)
 		os << v[i] << " ";
 	return os;
 }
-// surcharge operatr << pour afficher une stack
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const NAMESPACE::stack<T> &s)
 {
@@ -35,7 +34,6 @@ std::ostream &operator<<(std::ostream &os, const NAMESPACE::stack<T> &s)
 	return os;
 }
 
-// surcharge operator<< pour afficher une pair
 template <typename T1, typename T2>
 std::ostream &operator<<(std::ostream &os, const std::pair<T1, T2> &p)
 {
@@ -58,7 +56,7 @@ template <typename T>
 std::ostream &operator<<(std::ostream &os, const NAMESPACE::set<T> &s)
 {
 	os << "size: " << s.size() << " content: ";
-	for (typename NAMESPACE::set<T>::const_iterator it = m.begin(); it != m.end(); it++)
+	for (typename NAMESPACE::set<T>::const_iterator it = s.begin(); it != s.end(); it++)
 		os << *it << " ";
 	return os;
 }

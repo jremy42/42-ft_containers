@@ -24,7 +24,7 @@ namespace ft{
 			Node *left;
 			Node *right;
 			int _color;
-			// overload operator <
+			
 			friend bool operator<(const Node &lhs, const Node &rhs) { return lhs.data < rhs.data; };
 			self& operator=(const self &other) { data = other.data; parent = other.parent; left = other.left; right = other.right; _color = other._color; return *this; };
 	};

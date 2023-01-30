@@ -17,7 +17,8 @@ namespace ft{
             typedef T value_type;
             typedef Container container_type;
             typedef size_t size_type;
-        private:
+			
+        protected:
             container_type c;
         public:
             explicit stack(const container_type& ctnr = container_type()) : c(ctnr) {}
@@ -32,10 +33,7 @@ namespace ft{
 			friend bool operator<  (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c < rhs.c; };
 			friend bool operator<= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c <= rhs.c; };
 			friend bool operator>  (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c > rhs.c; };
-			friend bool operator>= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c >= rhs.c;
-		
-	};
-
+			friend bool operator>= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) { return lhs.c >= rhs.c;};
     };
 }
 

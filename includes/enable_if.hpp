@@ -10,4 +10,4 @@ namespace ft {
 		typedef T type;
 	};
 
-} // namespace ft
+} 

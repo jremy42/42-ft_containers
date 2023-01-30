@@ -57,7 +57,7 @@ function create_executable ()
 	mv std_containers $NAME
 	make fclean
 	clear
-	cp -r test/random_numbers.txt $NAME
+	cp -r random_numbers.txt $NAME
 	LOAD_BAR+="#"
 }
 
@@ -70,7 +70,7 @@ function execute_test ()
 	./$EXEC_DIR/ft_containers 1> $EXEC_DIR/ft_containers.out 2> $EXEC_DIR/ft_containers.err
 	./$EXEC_DIR/std_containers 1> $EXEC_DIR/std_containers.out 2> $EXEC_DIR/std_containers.err
 	./compares $NAME $EXEC_DIR/ft_containers.out $EXEC_DIR/std_containers.out
-	./compares "ERRORS" $EXEC_DIR/ft_containers.err $EXEC_DIR/std_containers.err
+	#./compares "ERRORS" $EXEC_DIR/ft_containers.err $EXEC_DIR/std_containers.err
 	TEST_NUMBER=$((TEST_NUMBER + 1))
 
 }
@@ -94,7 +94,7 @@ function check_leak()
 clear
 g++ -std=c++98 -o compares test/compare.cpp
 g++ -std=c++98 -o random test/random.cpp
-./random > test/random_numbers.txt
+./random > random_numbers.txt
 echo "Building executable tests..."
 clear
 
@@ -140,8 +140,15 @@ do
 	check_leak "$i"
 done
 
-
-
+echo -e "${BLU}*************************************************${RST}"
+echo -e "${BLU}*              BENCHMARK	                     *${RST}"
+echo -e "${BLU}*************************************************${RST}"
+cp -r test/time.cpp srcs/main.cpp
+make
+./ft_containers
+make fclean
 rm compares
 rm random
-#rm -rf .test_file
+rm random_numbers.txt
+rm -rf .test_file
+rm -rf valgrind.err

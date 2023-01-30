@@ -15,10 +15,10 @@
 template <class T, class Compare, class Alloc, class Node>
 ft::rbtree<T, Compare, Alloc, Node>::rbtree(void)
 {
-	value_type value;
+
 	_alloc = allocator_type();
 	_nil = _alloc.allocate(1);
-	_alloc.construct(_nil, Node(value, BLACK));
+	_alloc.construct(_nil, Node(value_type(), BLACK));
 	_nil->_color = BLACK;
 	_nil->left = NULL;
 	_nil->right = NULL;
@@ -28,11 +28,10 @@ ft::rbtree<T, Compare, Alloc, Node>::rbtree(void)
 }
 
 template <class T, class Compare, class Alloc, class Node>
-ft::rbtree<T, Compare, Alloc, Node>::rbtree(const key_compare &comp) : _comp(comp)
+ft::rbtree<T, Compare, Alloc, Node>::rbtree(const key_compare &comp) : _comp(comp) 
 {
-	value_type value;
 	_nil = _alloc.allocate(1);
-	_alloc.construct(_nil, Node(value, BLACK));
+	_alloc.construct(_nil, Node(value_type(), BLACK));
 	_nil->_color = BLACK;
 	_nil->left = NULL;
 	_nil->right = NULL;
@@ -135,6 +134,7 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 		return (new_node);
 	}
 	_insert_tree_preorder_mode(_root, new_node);
+	int coucou;
 	if (_root->_color == RED)
 		_root->_color = BLACK;
 	return (new_node);
@@ -296,8 +296,7 @@ void ft::rbtree<T, Compare, Alloc, Node>::_rotate_left(pointer node)
 	// a is the left child of x
 	// b is the left child of y
 	// p is the parent of x
-	// std::cout << "rotate left" << std::endl;
-	// std::cout << "node" << node->data << std::endl;
+	
 	pointer right_child = node->right;
 	node->right = right_child->left;
 	if (right_child->left != _nil)
@@ -321,8 +320,7 @@ void ft::rbtree<T, Compare, Alloc, Node>::_rotate_right(pointer node)
 	// a is the right child of x
 	// b is the right child of y
 	// p is the parent of x
-	// std::cout << "rotate right" << std::endl;
-	// std::cout << "node" << node->data << std::endl;
+
 	pointer left_child = node->left;
 	node->left = left_child->right;
 	if (left_child->right != _nil)
@@ -398,12 +396,7 @@ void ft::rbtree<T, Compare, Alloc, Node>::_delete_fixup(pointer node)
 {
 	// node == x
 	// sibling == w
-	//	std::cout << "delete fixup" << std::endl;
-	// std::cout << "node: " << node->data << std::endl;
 	pointer sibling = NULL;
-	// std::cout << "print node: " << std::endl;
-	//_printTreeWithTrunks(node, NULL, false);
-	// std::cout << "node parent: " << node->parent->data << std::endl;
 	if (node == _nil && node->parent == _nil)
 		return;
 	while (node != _root && node->_color == BLACK)
@@ -499,16 +492,13 @@ int ft::rbtree<T, Compare, Alloc, Node>::_get_height(pointer node)
 template <class T, class Compare, class Alloc, class Node>
 void ft::rbtree<T, Compare, Alloc, Node>::_transplant(pointer node, pointer child)
 {
-	// std::cout << "transplant" << std::endl;
-	// std::cout << "node " << node->data << std::endl;
-	// std::cout << "child " << child->data << std::endl;
+	
 	if (node->parent == _nil)
 		_root = child;
 	else if (node == node->parent->left)
 		node->parent->left = child;
 	else
 		node->parent->right = child;
-	// std::cout << "node->parent " << node->parent->data << std::endl;
 	child->parent = node->parent;
 }
 
@@ -517,7 +507,6 @@ typename ft::rbtree<T, Compare, Alloc, Node>::pointer ft::rbtree<T, Compare, All
 {
 	if (root == _nil)
 		return (NULL);
-	//use comp
 	if (!_comp(data, root->data) && !_comp(root->data, data))
 		return (root);
 	if (_comp(data, root->data))

@@ -36,7 +36,21 @@ int main()
     std::cout << "cit <= cite: " << (cit <= cite) << std::endl;
     std::cout << "cit > cite: " << (cit > cite) << std::endl;
     std::cout << "cit >= cite: " << (cit >= cite) << std::endl;
-    
+
+	//test iterator & const_iterator
+	std::cout << "it == cit: " << (it == cit) << std::endl;
+	std::cout << "it != cit: " << (it != cit) << std::endl;
+	std::cout << "it < cit: " << (it < cit) << std::endl;
+	std::cout << "it <= cit: " << (it <= cit) << std::endl;
+	std::cout << "it > cit: " << (it > cit) << std::endl;
+	std::cout << "it >= cit: " << (it >= cit) << std::endl;
+	std::cout << "cit == it: " << (cit == it) << std::endl;
+	std::cout << "cit != it: " << (cit != it) << std::endl;
+	std::cout << "cit < it: " << (cit < it) << std::endl;
+	std::cout << "cit <= it: " << (cit <= it) << std::endl;
+	std::cout << "cit > it: " << (cit > it) << std::endl;
+	std::cout << "cit >= it: " << (cit >= it) << std::endl;
+
     v.push_back(1);
     v.push_back(2);
     v.push_back(3);

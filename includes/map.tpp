@@ -19,8 +19,7 @@ template <class Key, class T, class Compare, class Alloc>
 template <class InputIterator>
 ft::map<Key, T, Compare, Alloc>::map(InputIterator first, InputIterator last, const key_compare& comp, const allocator_type& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type*) : _tree(value_compare(comp))
 {
-	//std::cout << "constructor with iterators called" << std::endl;
-	//std::cout << first->first << std::endl;
+
 	_alloc = alloc;
 	for (; first != last; ++first)
 		_tree.insert(*first);
@@ -73,7 +72,6 @@ typename ft::map<Key, T, Compare, Alloc>::allocator_type ft::map<Key, T, Compare
 template <class Key, class T, class Compare, class Alloc>
 typename ft::map<Key, T, Compare, Alloc>::mapped_type& ft::map<Key, T, Compare, Alloc>::operator[](const key_type& k)
 {
-	//std::cout << "operator[] called" << std::endl;
 	iterator it;
 	if (count(k))
 		it = find(k);
@@ -208,9 +206,7 @@ void ft::map<Key, T, Compare, Alloc>::insert(InputIterator first, InputIterator 
 template<class Key, class T, class Compare, class Alloc>
 void ft::map<Key, T, Compare, Alloc>::erase(iterator position)
 {
-	//std::cout << _tree.getRoot() << std::endl;
 	_tree.erase(*position);
-	//std::cout << _tree.getRoot() << std::endl;
 }
 
 template<class Key, class T, class Compare, class Alloc>
@@ -342,13 +338,13 @@ typename ft::map<Key, T, Compare, Alloc>::value_compare ft::map<Key, T, Compare,
 /* ********************************************
  * print
  ******************************************** */
-
+/* 
 template <class Key, class T, class Compare, class Alloc>
 void ft::map<Key, T, Compare, Alloc>::print(void)
 {
 	_tree.print_tree();
 }
-
+ */
 /* ********************************************
  * 			Non-member function overloads
  ******************************************** */

@@ -19,8 +19,7 @@ template <class Key, class Compare, class Alloc>
 template <class InputIterator>
 ft::set<Key, Compare, Alloc>::set(InputIterator first, InputIterator last, const key_compare& comp, const allocator_type& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type*) : _tree(value_compare(comp))
 {
-	//std::cout << "constructor with iterators called" << std::endl;
-	//std::cout << first->first << std::endl;
+
 	_alloc = alloc;
 	for (; first != last; ++first)
 		_tree.insert(*first);
@@ -67,42 +66,6 @@ typename ft::set<Key, Compare, Alloc>::allocator_type ft::set<Key, Compare, Allo
 	return _tree.get_allocator();
 }
 
-/* ********************************************
- * 	element access
- ******************************************** */
-template <class Key, class Compare, class Alloc>
-typename ft::set<Key, Compare, Alloc>::mapped_type& ft::set<Key, Compare, Alloc>::operator[](const key_type& k)
-{
-	//std::cout << "operator[] called" << std::endl;
-	iterator it;
-	if (count(k))
-		it = find(k);
-	else
-		it = insert(value_type(k, mapped_type())).first;
-	return it->second;
-}
-
-template <class Key, class Compare, class Alloc>
-typename ft::set<Key, Compare, Alloc>::mapped_type& ft::set<Key, Compare, Alloc>::at(const key_type& k)
-{
-	iterator it;
-	if (count(k))
-		it = find(k);
-	else
-		throw std::out_of_range("set::at");
-	return it->second;
-}
-
-template <class Key, class Compare, class Alloc>
-const typename ft::set<Key, Compare, Alloc>::mapped_type& ft::set<Key, Compare, Alloc>::at(const key_type& k) const
-{
-	const_iterator it;
-	if (count(k))
-		it = find(k);
-	else
-		throw std::out_of_range("set::at");
-	return it->second;
-}
 
 /* ********************************************
  * 	iterators
@@ -344,11 +307,11 @@ typename ft::set<Key, Compare, Alloc>::value_compare ft::set<Key, Compare, Alloc
  * print
  ******************************************** */
 
-template <class Key, class Compare, class Alloc>
+/* template <class Key, class Compare, class Alloc>
 void ft::set<Key, Compare, Alloc>::print(void)
 {
 	_tree.print_tree();
-}
+} */
 
 /* ********************************************
  * 			Non-member function overloads

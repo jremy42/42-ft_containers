@@ -78,7 +78,6 @@ namespace ft
 			pointer _nil;
 			allocator_type _alloc;
 			key_compare _comp;
-			//size_type _size;
 
 			// insert functions
 			void _insert_tree_preorder_mode(pointer root, pointer node);
@@ -88,9 +87,7 @@ namespace ft
 			void _delete_fixup(pointer node);
 			int _get_height(pointer node);
 			void _transplant(pointer node1, pointer node2);
-			// print functions
-			void _showTrunks(Trunk *p);
-			void _printTreeWithTrunks(pointer root, Trunk *prev, bool isLeft);
+	
 			void _clear(pointer node);
 			pointer _find(pointer node, const value_type data) const;
 			void	_erase(pointer node);
@@ -104,6 +101,9 @@ namespace ft
 			int		_getSize(pointer node) const;
 			pointer _lower_bound(pointer node, const value_type data) const;
 			pointer _upper_bound(pointer node, const value_type data) const;
+			// print functions
+			void _showTrunks(Trunk *p);
+			void _printTreeWithTrunks(pointer root, Trunk *prev, bool isLeft);
 	};
 
 

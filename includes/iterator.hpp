@@ -156,7 +156,6 @@ namespace ft {
 			template <class Left, class Right>
 			bool operator>=(const ft::random_access_iterator<Left> &lhs, const ft::random_access_iterator<Right> &rhs) { return lhs.base() >= rhs.base(); }
 
-	//create reverse iterator
 	template <class Iterator>
 	class reverse_iterator : public ft::iterator<
 									typename iterator_traits<Iterator>::iterator_category,
@@ -173,7 +172,7 @@ namespace ft {
 			typedef typename ft::iterator_traits<Iterator>::pointer				pointer;
 			typedef typename ft::iterator_traits<Iterator>::reference			reference;
 		
-		protected: // maybe private
+		private: // maybe private
 			iterator_type _current;
 
 		public:

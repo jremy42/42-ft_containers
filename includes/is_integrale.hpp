@@ -34,16 +34,6 @@ namespace ft {
 	struct is_integral_helper<signed char> {
 		static const bool value = true;
 	};
-
-/* 	template <>
-	struct is_integral_helper<char16_t> {
-		static const bool value = true;
-	};
-
-	template <>
-	struct is_integral_helper<char32_t> {
-		static const bool value = true;
-	}; */
 	template <>
 	struct is_integral_helper<unsigned char> {
 		static const bool value = true;

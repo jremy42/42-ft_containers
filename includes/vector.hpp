@@ -9,7 +9,6 @@
 #include "enable_if.hpp"
 #include "distance.hpp"
 #include "lexicographical_compare.hpp"
-#include <iterator>
 
 namespace ft{
 
@@ -89,8 +88,6 @@ namespace ft{
 			// Allocator
 			allocator_type get_allocator() const;
 
-			std::string leon(void) const;
-
 		private:
 			pointer _data;
 			size_type _size;
@@ -127,8 +124,7 @@ namespace ft{
 	
 	template <class T, class Alloc>
 	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y);
-
-
+	
 #include "vector.tpp"
 };
 

@@ -77,5 +77,17 @@ int main()
 		std::cout << it->first << std::endl;
 	}
 
+	std::cout << "map insert same key test" << std::endl;
+	NAMESPACE::map<int, int> m4;
+	m4.insert(NAMESPACE::make_pair(1, 1));
+	m4.insert(NAMESPACE::make_pair(2, 2));
+	m4.insert(NAMESPACE::make_pair(3, 3));
+	m4.insert(NAMESPACE::make_pair(4, 4));
+	std::cout << m4 << std::endl;
+	m4.insert(NAMESPACE::make_pair(1, 2));
+	m4.insert(NAMESPACE::make_pair(2, 3));
+	m4.insert(NAMESPACE::make_pair(3, 4));
+	m4.insert(NAMESPACE::make_pair(4, 5));
+	std::cout << m4 << std::endl;
 	return 0;
 }
